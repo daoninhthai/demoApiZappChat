@@ -3,6 +3,8 @@ package com.example.zalo.controller;
 import com.example.zalo.config.JwtTokenUtil;
 
 
+import com.example.zalo.model.jwt.JwtRequest;
+import com.example.zalo.model.jwt.JwtResponse;
 import com.example.zalo.service.JwtUserDetailsService;
 import com.example.zalo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

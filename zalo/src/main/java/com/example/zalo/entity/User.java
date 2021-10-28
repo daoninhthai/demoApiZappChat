@@ -45,34 +45,25 @@ public class User {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate joinedDate;
 
-    @Column(name = "location")
-    private String location;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @Column(name ="status" )
     private String status;
 
-    @Column(name = "staff_code")
-    private String staffCode;
 
     @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL)
     private Authority authority;
 
+    @Column(name = "link_avatar")
+    private String linkAvatar;
 
-    
 
-
-//    @OneToOne(mappedBy = "user")
-//    private Request request;
-
-    @Column(name = "first_login")
-    private String firstLogin;
-
+    @OneToMany(mappedBy = "author" ,cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Post> posts;
 
 
 
-    public User(String username2, String password, Authority authorities) {
-        this.username=username2;
-        this.password=password;
-        this.authority=authorities;
-    }
 }

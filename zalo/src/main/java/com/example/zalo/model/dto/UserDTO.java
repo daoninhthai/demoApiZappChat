@@ -38,9 +38,6 @@ public class UserDTO {
     private String gender;
 
 
-    private String staffCode;
-
-
     private LocalDate joinedDate;
 
 
@@ -49,17 +46,16 @@ public class UserDTO {
     @JsonIgnore
     private String password;
 
+    private String phoneNumber;
 
-    private String location;
-
+    private String linkAvatar;
 
     private String authority;
 
 
-    private String defaultPassword;
 
 
-    private String firstLogin;
+
 
 
 

@@ -58,13 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/v2/api-docs",
 						"/webjars/**").permitAll()
 				.antMatchers("/api/v1/authenticate").permitAll()
-				.antMatchers("/**/check-change-password/**").permitAll()
-				.antMatchers("/**/request/**").hasAnyRole("STAFF", "ADMIN")
+
+
 				.antMatchers("/**/change-password/**").permitAll()
 				.antMatchers("/**/categories/**", "/**/assignments/**", 
 						"/**/assets/**" ).hasAnyRole("ADMIN")
 				.antMatchers("/**/users/**").permitAll()
-				.antMatchers("/**/my-assignments", "/**/my-info/**", "/**/searchby", "/**/assignments/**").hasAnyRole("STAFF", "ADMIN")
+				.antMatchers("/**/my-assignments", "/**/my-info/**", "/**/searchby", "/**/assignments/**").hasAnyRole( "ADMIN")
 				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
