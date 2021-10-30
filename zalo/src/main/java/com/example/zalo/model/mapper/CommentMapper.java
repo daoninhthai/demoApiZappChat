@@ -1,0 +1,43 @@
+package com.example.zalo.model.mapper;
+
+import com.example.zalo.entity.Comment;
+import com.example.zalo.entity.Post;
+import com.example.zalo.model.dto.CommentDTO;
+import com.example.zalo.model.dto.PostDTO;
+import com.example.zalo.model.request.CreateCommentRequest;
+import com.example.zalo.model.request.CreatePostRequest;
+import com.example.zalo.model.request.UpdateCommentRequest;
+import com.example.zalo.model.request.UpdatePostRequest;
+
+public class CommentMapper {
+    public static CommentDTO toCommentDTO(Comment comment) {
+        CommentDTO tmp = new CommentDTO();
+        tmp.setId(comment.getId());
+        tmp.setCommentatorId(comment.getCommentatorId());
+        tmp.setContent(comment.getContent());
+        tmp.setUpdated(comment.getUpdated());
+        tmp.setPostId(comment.getPostId());
+        return tmp;
+    }
+
+
+    public static Comment toComment(CreateCommentRequest request,int id) {
+        Comment comment = new Comment();
+
+        comment.setCommentatorId(request.getCommentatorId());
+        comment.setPostId(id);
+        comment.setContent(request.getContent());
+        comment.setUpdated(request.getUpdated());
+        return comment;
+    }
+
+    public static Comment toComment(UpdateCommentRequest request, int id) {
+        Comment comment = new Comment();
+
+        comment.setId(id);
+        comment.setContent(request.getContent());
+        comment.setUpdated(request.getUpdated());
+        return comment;
+    }
+
+}

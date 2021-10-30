@@ -98,14 +98,14 @@ public class CreateUserRequest {
     @JsonProperty("authority")
     private String authority;
 
-
-    @ApiModelProperty(
-            example="user",
-            notes=" 1",
-            required=true
-    )
-    @JsonProperty("user_id")
-    private User user;
+//
+//    @ApiModelProperty(
+//            example="user",
+//            notes=" 1",
+//            required=true
+//    )
+//    @JsonProperty("user_id")
+//    private User user;
 
     @ApiModelProperty(
             example="user",

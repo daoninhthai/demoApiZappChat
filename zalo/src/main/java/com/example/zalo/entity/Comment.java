@@ -32,11 +32,8 @@ public class Comment {
     private LocalDate updated;
 
 
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    private Post commentPost;
+    @Column(name ="post_id")
+    private Integer postId;
 
 
 }

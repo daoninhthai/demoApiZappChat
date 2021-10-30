@@ -37,12 +37,10 @@ public class Post {
     private User author;
 
 
-    @OneToMany(mappedBy = "commentPost" ,cascade = CascadeType.ALL)
-    private  List<Comment> comment;
 
 
-    @OneToMany(mappedBy = "likePost" ,cascade = CascadeType.ALL)
-    private  List<Like> like;
+//    @OneToMany(mappedBy = "likePost" ,cascade = CascadeType.ALL)
+//    private  List<Like> like;    like la 1 thuoc tinh cua post
 
 
 

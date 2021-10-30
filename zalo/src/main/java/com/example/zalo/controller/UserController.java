@@ -36,7 +36,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/getall")
+    @GetMapping("/users")
     public ResponseEntity<?> getAllPosts(){
         List<UserDTO> posts = userService.getAllUser();
         return ResponseEntity.ok(posts);
@@ -51,12 +51,12 @@ public class UserController {
 
 
 
-    @GetMapping("/my-info")
-    public ResponseEntity<?> getUserByUsername(Principal principal) {
-        String username = principal.getName();
-        UserDTO result = userService.findByUserName(username);
-        return ResponseEntity.ok(result);
-    }
+//    @GetMapping("/my-info")
+//    public ResponseEntity<?> getUserByUsername(Principal principal) {
+//        String username = principal.getName();
+//        UserDTO result = userService.findByUserName(username);
+//        return ResponseEntity.ok(result);
+//    }
 
 
 

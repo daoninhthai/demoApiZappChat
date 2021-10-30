@@ -3,6 +3,8 @@ package com.example.zalo.model.dto;
 
 
 import java.time.LocalDate;
+
+import com.example.zalo.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +28,7 @@ public class PostDTO {
     private LocalDate updated;
 
     private Integer author;
+
+
 
 }

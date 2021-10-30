@@ -1,6 +1,6 @@
 package com.example.zalo.model.request;
 
-import com.example.zalo.entity.User;
+import com.example.zalo.entity.Post;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreatePostRequest {
+public class CreateCommentRequest {
     @ApiModelProperty(
             example="content",
             required=true
@@ -23,12 +22,11 @@ public class CreatePostRequest {
     private String content;
 
     @ApiModelProperty(
-            example="123456",
+            example="content",
             required=true
     )
-    @JsonProperty("media")
-    private String media;
-
+    @JsonProperty("commentator_id")
+    private  Integer commentatorId;
 
     @ApiModelProperty(
             example="1999-06-02T21:33:45.249967",
@@ -38,11 +36,9 @@ public class CreatePostRequest {
     private LocalDate updated;
 
     @ApiModelProperty(
-            example="123456",
+            example="content",
             required=true
     )
-    @JsonProperty("author_id")
-    private Integer author ;
-
-
+    @JsonProperty("comment_post")
+    private Integer commentPost;
 }

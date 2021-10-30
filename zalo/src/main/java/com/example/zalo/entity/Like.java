@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity
-@Table(name = "like")
+//@Entity
+//@Table(name = "like")
 public class Like {
     @Id
     @Column(name ="id")

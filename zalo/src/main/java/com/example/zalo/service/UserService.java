@@ -1,5 +1,6 @@
 package com.example.zalo.service;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -21,6 +22,8 @@ public interface UserService {
     User findUserByUsername(String username);
 
     UserDTO getUserById(int id);
+
+    int getCurrentUserId(Principal principal);
 
 //    UserDTO updateUser(UpdateUserRequest request, int id);
 //

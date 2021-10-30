@@ -1,5 +1,6 @@
 package com.example.zalo.service.impl;
 
+import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,14 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("No user found");
         }
         return UserMapper.toUserDTO(user.get());
+    }
+
+    @Override
+    public int getCurrentUserId(Principal principal) {
+        String username = principal.getName();
+        User user = userRepository.findByUsername(username);
+        int id = user.getId();
+        return id;
     }
 
     @Override

@@ -4,7 +4,9 @@ import com.example.zalo.entity.Post;
 import com.example.zalo.entity.User;
 import com.example.zalo.model.dto.PostDTO;
 import com.example.zalo.model.dto.UserDTO;
+import com.example.zalo.model.request.CreatePostRequest;
 import com.example.zalo.model.request.CreateUserRequest;
+import com.example.zalo.model.request.UpdatePostRequest;
 
 public class PostMapper {
     public static PostDTO toPostDTO(Post post) {
@@ -18,19 +20,27 @@ public class PostMapper {
     }
 
 
-    public static User toPost(CreateUserRequest request) {
-        User user = new User();
+    public static Post toPost(CreatePostRequest request) {
+        Post post = new Post();
 
-        user.setUsername(request.getUsername());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setGender(request.getGender());
-        user.setDob(request.getDob());
-        user.setJoinedDate(request.getJoinedDate());
-        user.setStatus(request.getStatus());
-        user.setPhoneNumber(request.getPhoneNumber());
-        user.setLinkAvatar(request.getLinkAvatar());
-        return user;
+        post.setContent(request.getContent());
+        post.setMedia(request.getMedia());
+        post.setUpdated(request.getUpdated());
+        return post;
     }
+
+    public static Post toPost(UpdatePostRequest request,int id) {
+        Post post = new Post();
+
+        post.setId(id);
+        post.setContent(request.getContent());
+        post.setMedia(request.getMedia());
+        post.setUpdated(request.getUpdated());
+
+        return post;
+    }
+
+
+
 
 }
