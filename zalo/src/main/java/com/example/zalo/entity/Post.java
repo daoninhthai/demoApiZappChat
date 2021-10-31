@@ -37,7 +37,10 @@ public class Post {
     private User author;
 
 
-
+    @OneToMany(mappedBy = "post" ,cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Comment> comments;
 
 //    @OneToMany(mappedBy = "likePost" ,cascade = CascadeType.ALL)
 //    private  List<Like> like;    like la 1 thuoc tinh cua post

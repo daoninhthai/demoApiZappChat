@@ -13,10 +13,10 @@ public class CommentMapper {
     public static CommentDTO toCommentDTO(Comment comment) {
         CommentDTO tmp = new CommentDTO();
         tmp.setId(comment.getId());
-        tmp.setCommentatorId(comment.getCommentatorId());
+        tmp.setUser(comment.getUser().getId());
         tmp.setContent(comment.getContent());
         tmp.setUpdated(comment.getUpdated());
-        tmp.setPostId(comment.getPostId());
+        tmp.setPost(comment.getPost().getId());
         return tmp;
     }
 
@@ -24,8 +24,6 @@ public class CommentMapper {
     public static Comment toComment(CreateCommentRequest request,int id) {
         Comment comment = new Comment();
 
-        comment.setCommentatorId(request.getCommentatorId());
-        comment.setPostId(id);
         comment.setContent(request.getContent());
         comment.setUpdated(request.getUpdated());
         return comment;

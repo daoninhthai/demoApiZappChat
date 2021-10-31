@@ -21,8 +21,13 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "commentator_id")
-    private  Integer commentatorId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private User user;
+
+
 
     @Column(name = "content")
     private String content;
@@ -32,8 +37,11 @@ public class Comment {
     private LocalDate updated;
 
 
-    @Column(name ="post_id")
-    private Integer postId;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private Post post;
 
 
 }

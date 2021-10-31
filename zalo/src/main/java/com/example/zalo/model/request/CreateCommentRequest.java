@@ -1,6 +1,7 @@
 package com.example.zalo.model.request;
 
 import com.example.zalo.entity.Post;
+import com.example.zalo.entity.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,8 @@ public class CreateCommentRequest {
             example="content",
             required=true
     )
-    @JsonProperty("commentator_id")
-    private  Integer commentatorId;
+    @JsonProperty("user_id")
+    private Integer user;
 
     @ApiModelProperty(
             example="1999-06-02T21:33:45.249967",
@@ -39,6 +40,6 @@ public class CreateCommentRequest {
             example="content",
             required=true
     )
-    @JsonProperty("comment_post")
-    private Integer commentPost;
+    @JsonProperty("post_id")
+    private Integer Post;
 }

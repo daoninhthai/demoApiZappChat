@@ -27,7 +27,7 @@ public class CommentController {
     }
 
 
-    @PostMapping("/comments")
+    @PostMapping("/comments/post/{id}")
     public ResponseEntity<?> createComment(@Valid @RequestBody CreateCommentRequest request, @PathVariable int id, Principal principal) {
         String username = principal.getName();
         UserDTO userDTO =userService.findByUserName(username);

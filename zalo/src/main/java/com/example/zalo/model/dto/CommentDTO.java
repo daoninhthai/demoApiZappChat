@@ -17,7 +17,7 @@ public class CommentDTO {
     private Integer id;
 
 
-    private  Integer commentatorId;
+    private  Integer user;
 
 
     private String content;
@@ -26,5 +26,5 @@ public class CommentDTO {
     private LocalDate updated;
 
 
-    private Integer postId;
+    private Integer post;
 }

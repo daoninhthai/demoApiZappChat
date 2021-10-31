@@ -1,6 +1,8 @@
 package com.example.zalo.service.impl;
 
 import com.example.zalo.entity.Comment;
+import com.example.zalo.entity.Post;
+import com.example.zalo.entity.User;
 import com.example.zalo.exception.InternalServerException;
 import com.example.zalo.exception.NotFoundException;
 import com.example.zalo.model.dto.CommentDTO;
@@ -32,9 +34,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDTO createComment(CreateCommentRequest request, int postId ,int commentatorId) {
         Comment comment = new Comment();
+        User user =new User();
+        user.setId(commentatorId);
+        Post post = new Post();
+        post.setId(postId);
         comment = CommentMapper.toComment(request,postId);
-        comment.setPostId(postId);
-        comment.setCommentatorId(commentatorId);
+        comment.setPost(post);
+        comment.setUser(user);
         commentRepository.save(comment);
 
         return CommentMapper.toCommentDTO(comment);
