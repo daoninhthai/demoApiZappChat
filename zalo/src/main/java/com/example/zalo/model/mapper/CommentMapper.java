@@ -8,9 +8,11 @@ import com.example.zalo.model.request.CreateCommentRequest;
 import com.example.zalo.model.request.CreatePostRequest;
 import com.example.zalo.model.request.UpdateCommentRequest;
 import com.example.zalo.model.request.UpdatePostRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CommentMapper {
-    public static CommentDTO toCommentDTO(Comment comment) {
+    public  CommentDTO toCommentDTO(Comment comment) {
         CommentDTO tmp = new CommentDTO();
         tmp.setId(comment.getId());
         tmp.setUser(comment.getUser().getId());

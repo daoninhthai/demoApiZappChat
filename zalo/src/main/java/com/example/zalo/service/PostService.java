@@ -13,7 +13,7 @@ import java.util.List;
 public interface PostService {
     List<PostDTO> getAllPost();
 
-    PostDTO createPost(CreatePostRequest request);
+    PostDTO createPost(CreatePostRequest request,int authorId);
 
     PostDTO updatePost(UpdatePostRequest request, int id);
 

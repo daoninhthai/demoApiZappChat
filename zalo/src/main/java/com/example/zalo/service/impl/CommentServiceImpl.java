@@ -15,20 +15,30 @@ import com.example.zalo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 
 
     private final CommentRepository commentRepository;
-
+    private final CommentMapper commentMapper;
     private  final UserService userService;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, UserService userService) {
+    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper, UserService userService) {
         this.commentRepository = commentRepository;
+        this.commentMapper = commentMapper;
         this.userService = userService;
+    }
+
+    @Override
+    public List<CommentDTO> getAllComment(int postId) {
+        List<Comment> comments = commentRepository.getAllComment(postId);
+        return comments.stream().map(commentMapper::toCommentDTO).collect(Collectors.toList());
+
     }
 
     @Override
@@ -43,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setUser(user);
         commentRepository.save(comment);
 
-        return CommentMapper.toCommentDTO(comment);
+        return commentMapper.toCommentDTO(comment);
     }
 
     @Override
@@ -60,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
             throw new InternalServerException("Can't update comment");
         }
 
-        return CommentMapper.toCommentDTO(updateComment);
+        return commentMapper.toCommentDTO(updateComment);
     }
 
     @Override

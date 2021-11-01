@@ -7,7 +7,9 @@ import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.request.CreatePostRequest;
 import com.example.zalo.model.request.CreateUserRequest;
 import com.example.zalo.model.request.UpdatePostRequest;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PostMapper {
     public static PostDTO toPostDTO(Post post) {
         PostDTO tmp = new PostDTO();

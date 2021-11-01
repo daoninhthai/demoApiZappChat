@@ -1,5 +1,6 @@
 package com.example.zalo.controller;
 
+import com.example.zalo.entity.Comment;
 import com.example.zalo.entity.User;
 import com.example.zalo.model.dto.CommentDTO;
 import com.example.zalo.model.dto.UserDTO;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -26,6 +28,11 @@ public class CommentController {
         this.userService = userService;
     }
 
+    @GetMapping("/comments/post/{postId}")
+    public ResponseEntity<?> searchPost(@PathVariable int postId){
+        List<CommentDTO> comments = commentService.getAllComment(postId);
+        return ResponseEntity.ok(comments);
+    }
 
     @PostMapping("/comments/post/{id}")
     public ResponseEntity<?> createComment(@Valid @RequestBody CreateCommentRequest request, @PathVariable int id, Principal principal) {
@@ -37,4 +44,6 @@ public class CommentController {
         CommentDTO result = commentService.createComment(request,id,commentatorId);
         return ResponseEntity.ok(result);
     }
+
+
 }

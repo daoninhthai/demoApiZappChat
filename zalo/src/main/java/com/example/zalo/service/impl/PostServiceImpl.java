@@ -1,6 +1,7 @@
 package com.example.zalo.service.impl;
 
 import com.example.zalo.entity.Post;
+import com.example.zalo.entity.User;
 import com.example.zalo.exception.InternalServerException;
 import com.example.zalo.exception.NotFoundException;
 import com.example.zalo.model.dto.PostDTO;
@@ -37,9 +38,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO createPost(CreatePostRequest request) {
+    public PostDTO createPost(CreatePostRequest request,int authorId) {
         Post post = new Post();
+        User user = new User();
+        user.setId(authorId);
         post = PostMapper.toPost(request);
+        post.setAuthor(user);
         postRepository.save(post);
 
         return PostMapper.toPostDTO(post);
