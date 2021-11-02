@@ -64,6 +64,8 @@ public class User {
     @ToString.Exclude
     private List<Post> posts;
 
+
+
     @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
