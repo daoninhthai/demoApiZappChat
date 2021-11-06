@@ -2,8 +2,11 @@ package com.example.zalo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.ui.Model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.security.Key;
 import java.time.LocalDate;
 
 @Getter
@@ -12,20 +15,26 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "Friend")
-public class Friend {
-    @Id
-    @Column(name ="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+@Table(name = "friend")
+public class Friend   implements Serializable {
 
-    @JoinColumn(name = "user_A", referencedColumnName = "id", nullable = false)
-    @OneToOne(optional = false, targetEntity = User.class)
+
+
+    @Id
+    @Column(name ="fid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int id;
+
+
+
+    @JoinColumn(name = "user_a", nullable = false, updatable = false)
+    @ManyToOne(optional = false)
     public User userA;
 
-    @JoinColumn(name = "user_B", referencedColumnName = "id", nullable = false)
-    @OneToOne(optional = false, targetEntity = User.class)
+    @JoinColumn(name = "user_b", nullable = false, updatable = false)
+    @ManyToOne(optional = false)
     public User userB;
+
 
     @Column(name ="created")
     @JsonFormat(pattern="yyyy-MM-dd")
@@ -33,4 +42,12 @@ public class Friend {
 
     @Column(name = "state")
     private String state;
-}
+
+
+
+
+
+
+
+    }
+

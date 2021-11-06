@@ -6,6 +6,7 @@ import com.example.zalo.entity.User;
 import com.example.zalo.exception.InternalServerException;
 import com.example.zalo.exception.NotFoundException;
 import com.example.zalo.model.dto.FriendDTO;
+import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.mapper.FriendMapper;
 import com.example.zalo.model.request.CreateFriendRequest;
 import com.example.zalo.repository.FriendRepository;
@@ -46,17 +47,20 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public FriendDTO createFriendRequest(CreateFriendRequest request, int userBId) {
+    public FriendDTO createFriendRequest(CreateFriendRequest request,int userAId,int userBId) {
         Friend friend = new Friend();
         User userA = new User();
-        userA.setId(request.getUserA());
         User userB = new User();
+
+        userA.setId(userAId);
         userB.setId(userBId);
+
         friend.setUserA(userA);
         friend.setUserB(userB);
-        friend.setState("waiting");
-        friend= FriendMapper.toFriend(request,userBId);
 
+        friend= FriendMapper.toFriend(request);
+        friend.setUserA(userA);
+        friend.setUserB(userB);
         friendRepository.save(friend);
 
         return FriendMapper.toFriendDTO(friend);

@@ -15,11 +15,12 @@ import java.time.LocalDate;
 public class CreateFriendRequest {
 
 
-    @JsonProperty("userA_id")
+    @JsonProperty("user_a")
     private Integer userA;
 
-    @JsonProperty("userB_id")
+    @JsonProperty("user_b")
     private Integer userB;
+
 
     @JsonProperty("created")
     private LocalDate created;

@@ -1,9 +1,12 @@
 package com.example.zalo.controller;
 
+import com.example.zalo.entity.Friend;
 import com.example.zalo.model.dto.CommentDTO;
 import com.example.zalo.model.dto.FriendDTO;
 import com.example.zalo.model.dto.PostDTO;
 import com.example.zalo.model.dto.UserDTO;
+import com.example.zalo.model.request.CreateFriendRequest;
+import com.example.zalo.model.request.CreatePostRequest;
 import com.example.zalo.model.request.UpdatePostRequest;
 import com.example.zalo.service.FriendService;
 import com.example.zalo.service.UserService;
@@ -39,7 +42,19 @@ public class FriendController {
         return ResponseEntity.ok(friends);
     }
 
-    @GetMapping("/friends/requests")
+    @PostMapping("/friendRequest/{userBId}")
+    public ResponseEntity<?> createFriendRequest(@Valid @RequestBody CreateFriendRequest request, @PathVariable int userBId,Principal principal) {
+        String username = principal.getName();
+        UserDTO userDTO =userService.findByUserName(username);
+
+         int userAId =userDTO.getId();
+
+        FriendDTO result = friendService.createFriendRequest(request,userAId,userBId);
+        return ResponseEntity.ok(result);
+    }
+
+
+    @GetMapping("/friendRequest")
     public ResponseEntity<?> getAllFriendRequest( Principal principal){
 
         String username = principal.getName();
@@ -51,13 +66,13 @@ public class FriendController {
         return ResponseEntity.ok(friends);
     }
 
-    @PutMapping("/friends/requests/{id}")
+    @PutMapping("/friendRequest/{id}")
     public ResponseEntity<?> acceptFriendRequest( @PathVariable int id) {
         friendService.acceptFriendRequest(id);
         return ResponseEntity.ok("Accepted friend request");
     }
 
-    @DeleteMapping("/friends/requests/{id}")
+    @DeleteMapping("/friendRequest/{id}")
     public ResponseEntity<?> deleteFriendRequest(@PathVariable int id) {
         friendService.deleteFriendRequest(id);
         return ResponseEntity.ok("Deleted friend request");

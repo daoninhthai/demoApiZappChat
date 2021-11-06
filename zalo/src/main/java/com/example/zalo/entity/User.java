@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,11 +18,13 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
+
+
     @Id
     @Column(name ="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     @Column(name = "username", unique = true, nullable = false)
     private String username;
@@ -71,4 +77,11 @@ public class User {
     @ToString.Exclude
     private List<Comment> comments;
 
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userA")
+    public List<Friend> followUsers;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userB")
+    public List<Friend> followers;
 }

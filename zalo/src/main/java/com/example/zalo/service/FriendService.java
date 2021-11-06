@@ -12,7 +12,7 @@ public interface FriendService {
 
     List<FriendDTO> getAllFriendRequest(int userId);
 
-    FriendDTO createFriendRequest(CreateFriendRequest request, int userBId);
+    FriendDTO createFriendRequest(CreateFriendRequest request,int userAId, int userBId);
 
     void acceptFriendRequest( int id);
 
