@@ -84,4 +84,11 @@ public class User implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userB")
     public List<Friend> followers;
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userA")
+    public List<Block> blocker;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userB")
+    public List<Block> blockedUser;
 }
