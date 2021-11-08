@@ -1,18 +1,26 @@
 package com.example.zalo.service;
 
+import com.example.zalo.entity.User;
+import com.example.zalo.exception.NotFoundException;
 import com.example.zalo.model.dto.FriendDTO;
+import com.example.zalo.model.dto.UserDTO;
+import com.example.zalo.model.mapper.UserMapper;
 import com.example.zalo.model.request.CreateFriendRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface FriendService {
     List<FriendDTO> getAllFriend(int userId);
 
+
+
+
     List<FriendDTO> getAllFriendRequest(int userId);
 
-    FriendDTO createFriendRequest(CreateFriendRequest request,int userAId, int userBId);
+    void createFriendRequest(CreateFriendRequest request,int userAId, int userBId);
 
     void acceptFriendRequest( int id);
 

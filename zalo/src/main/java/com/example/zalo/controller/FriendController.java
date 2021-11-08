@@ -1,6 +1,7 @@
 package com.example.zalo.controller;
 
 import com.example.zalo.entity.Friend;
+import com.example.zalo.exception.DuplicateRecordException;
 import com.example.zalo.model.dto.CommentDTO;
 import com.example.zalo.model.dto.FriendDTO;
 import com.example.zalo.model.dto.PostDTO;
@@ -11,6 +12,7 @@ import com.example.zalo.model.request.UpdatePostRequest;
 import com.example.zalo.service.FriendService;
 import com.example.zalo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,10 +49,10 @@ public class FriendController {
         String username = principal.getName();
         UserDTO userDTO =userService.findByUserName(username);
 
-         int userAId =userDTO.getId();
+        int userAId =userDTO.getId();
 
-        FriendDTO result = friendService.createFriendRequest(request,userAId,userBId);
-        return ResponseEntity.ok(result);
+       friendService.createFriendRequest(request,userAId,userBId);
+        return ResponseEntity.ok("Friend request sent successfully");
     }
 
 
