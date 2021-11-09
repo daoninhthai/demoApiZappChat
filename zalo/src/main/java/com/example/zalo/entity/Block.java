@@ -31,7 +31,7 @@ public class Block {
 
 
     @Column(name ="created")
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDate created;
 
     @Column(name = "state")
