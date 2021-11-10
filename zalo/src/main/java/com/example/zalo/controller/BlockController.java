@@ -3,14 +3,14 @@ package com.example.zalo.controller;
 import com.example.zalo.model.dto.BlockDTO;
 import com.example.zalo.model.dto.FriendDTO;
 import com.example.zalo.model.dto.UserDTO;
+import com.example.zalo.model.request.CreateBlockRequest;
+import com.example.zalo.model.request.CreateFriendRequest;
 import com.example.zalo.service.BlockService;
 import com.example.zalo.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -47,4 +47,33 @@ public class BlockController {
         return ResponseEntity.ok(blocks);
     }
 
+    @PostMapping("/blockChatRequest/{userBId}")
+    public ResponseEntity<?> createBlockChatRequest( @PathVariable int userBId, Principal principal) {
+        String username = principal.getName();
+        UserDTO userDTO =userService.findByUserName(username);
+
+        int userAId =userDTO.getId();
+
+        blockService.createBlockChatRequest(userAId,userBId);
+        return ResponseEntity.ok("Block chat successfully");
+    }
+
+    @PostMapping("/blockDiaryRequest/{userBId}")
+    public ResponseEntity<?> createBlockDiaryRequest(@Valid @RequestBody CreateBlockRequest request, @PathVariable int userBId,Principal principal) {
+        String username = principal.getName();
+        UserDTO userDTO =userService.findByUserName(username);
+
+        int userAId =userDTO.getId();
+
+        blockService.createBlockDiaryRequest(request,userAId,userBId);
+        return ResponseEntity.ok("Block diary successfully");
+    }
+
+
+
+    @DeleteMapping("/block/{id}")
+    public ResponseEntity<?> deleteFriendRequest(@PathVariable int id) {
+        blockService.deleteBlockRequest(id);
+        return ResponseEntity.ok("Deleted block");
+    }
 }

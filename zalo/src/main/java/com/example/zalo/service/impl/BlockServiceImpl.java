@@ -13,11 +13,12 @@ import com.example.zalo.model.mapper.FriendMapper;
 import com.example.zalo.model.request.CreateBlockRequest;
 import com.example.zalo.repository.BlockRepository;
 import com.example.zalo.service.BlockService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class BlockServiceImpl implements BlockService {
     private final BlockRepository blockRepository;
 
@@ -46,7 +47,7 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    public void createBlockChatRequest(CreateBlockRequest request, int userAId, int userBId) {
+    public void createBlockChatRequest(int userAId, int userBId) {
         if(userAId == userBId){
             throw new DuplicateRecordException("You cannot send friend requests to yourself");
         }
@@ -67,7 +68,7 @@ public class BlockServiceImpl implements BlockService {
         block.setUserA(userA);
         block.setUserB(userB);
 
-        block= BlockMapper.toBlockChat(request);
+        block= BlockMapper.toBlockChat();
         block.setUserA(userA);
         block.setUserB(userB);
 

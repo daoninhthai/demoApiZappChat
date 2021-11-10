@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Component
 @Getter
 @Setter
@@ -23,7 +25,7 @@ public class BlockDTO {
 
     public Integer userB;
 
-    private LocalDate created;
+    private LocalDateTime created;
 
     private String state;
 

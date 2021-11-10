@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,7 +34,7 @@ public class Block {
 
     @Column(name ="created")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDate created;
+    private LocalDateTime created;
 
     @Column(name = "state")
     private String state;

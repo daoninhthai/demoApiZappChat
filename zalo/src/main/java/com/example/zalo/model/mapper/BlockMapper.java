@@ -10,6 +10,7 @@ import com.example.zalo.model.request.UpdateBlockRequest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class BlockMapper {
     public static BlockDTO toBlockDTO(Block block) {
@@ -23,10 +24,12 @@ public class BlockMapper {
     }
 
 
-    public static Block toBlockChat(CreateBlockRequest request ) {
+    public static Block toBlockChat() {
         Block block = new Block();
         block.setState("chat");
-        LocalDate now = LocalDate.now();
+
+        ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+        LocalDateTime now = LocalDateTime.now(zoneId);
         block.setCreated(now);
         return block;
     }
@@ -35,12 +38,9 @@ public class BlockMapper {
         Block block = new Block();
         block.setState("diary");
         LocalDate now = LocalDate.now();
-        block.setCreated(now);
+//        block.setCreated(now);
         return block;
     }
 
-    public static Block toBlock(UpdateBlockRequest request ) {
 
-        return new Block();
-    }
 }
