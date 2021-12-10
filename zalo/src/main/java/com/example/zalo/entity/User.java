@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -57,6 +55,8 @@ public class User implements Serializable {
     @Column(name ="status" )
     private String status;
 
+//    @Column(name="registration_date")
+//    private Timestamp registrationDate;
 
     @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL)
     private Authority authority;
@@ -91,4 +91,7 @@ public class User implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userB")
     public List<Block> blockedUser;
+
+
+
 }

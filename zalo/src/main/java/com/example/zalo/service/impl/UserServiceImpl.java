@@ -10,10 +10,14 @@ import java.util.stream.Collectors;
 
 import com.example.zalo.entity.Authority;
 import com.example.zalo.entity.User;
+import com.example.zalo.exception.BadRequestException;
+import com.example.zalo.exception.InternalServerException;
 import com.example.zalo.exception.NotFoundException;
 import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.mapper.UserMapper;
+import com.example.zalo.model.request.ChangePasswordRequest;
 import com.example.zalo.model.request.CreateUserRequest;
+import com.example.zalo.model.request.UpdateUserRequest;
 import com.example.zalo.repository.UserRepository;
 import com.example.zalo.service.UserService;
 import org.slf4j.Logger;
@@ -78,6 +82,65 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO updateUser(UpdateUserRequest request, int id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException("No user found");
+        }
+        User updateUser = UserMapper.mergeUpdate(request, user.get());
+        userRepository.save(updateUser);
+        return UserMapper.toUserDTO(updateUser);
+    }
+
+    @Override
+    public UserDTO disableUser(UpdateUserRequest request, int id) {
+        Optional<User> user = userRepository.findById(id);
+
+
+        User changeUserStatus = UserMapper.mergeDisable(request, user.get());
+        try {
+            userRepository.save(changeUserStatus);
+        } catch (Exception ex) {
+            throw new BadRequestException("Can't change user status");
+        }
+        return UserMapper.toUserDTO(changeUserStatus);
+    }
+
+    @Override
+    public List<UserDTO> searchByNameOrId(String keyword) {
+        String fullName = "%" + keyword + "%";
+        String id = keyword;
+        List<User> users = userRepository.findUserByFullNameOrId(fullName, id);
+        List<UserDTO> result = new ArrayList<>();
+        for (User user : users) {
+            result.add(UserMapper.toUserDTO(user));
+        }
+        return result;
+    }
+
+    @Override
+    public List<UserDTO> getUsers(String type, String keyword) {
+
+        List<User> users = new ArrayList<>();
+        String fullName = "%" + keyword + "%";
+        String id = keyword;
+        if (type == null && keyword == null) {
+            users = userRepository.findByStatus("enabled");
+        } else if (type != null && keyword == null) {
+            users = userRepository.findByAuthority_authorityAndStatus(type, "enabled");
+        } else if (type == null && keyword != null) {
+            users = userRepository.findUserByFullNameOrId(fullName, id);
+        } else if (type != null && keyword != null) {
+            users = userRepository.findUserByFullNameOrId(fullName, id);
+            users = users.stream().filter(user -> user.getAuthority().getAuthority().equals(type.toUpperCase())).collect(Collectors.toList());
+        }
+        return users.stream()
+
+                .map(UserMapper::toUserDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public UserDTO createUser(CreateUserRequest request) {
 
         User user = userRepository.findByUsername(request.getUsername());
@@ -99,6 +162,20 @@ public class UserServiceImpl implements UserService {
         user.setAuthority(authority);
         userRepository.saveAndFlush(user);
         return UserMapper.toUserDTO(user);
+    }
+
+    @Override
+    public UserDTO changePassword(ChangePasswordRequest request, String username) {
+        User updateUser = UserMapper.toUser(request, username);
+        try {
+
+            updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
+            userRepository.updatePassword(updateUser.getPassword(), username);
+        } catch (Exception ex) {
+            throw new InternalServerException("Can't update password");
+        }
+
+        return UserMapper.toUserDTO(updateUser);
     }
 
 

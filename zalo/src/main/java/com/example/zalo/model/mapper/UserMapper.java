@@ -1,9 +1,12 @@
 package com.example.zalo.model.mapper;
 
 
+import com.example.zalo.entity.Authority;
 import com.example.zalo.entity.User;
 import com.example.zalo.model.dto.UserDTO;
+import com.example.zalo.model.request.ChangePasswordRequest;
 import com.example.zalo.model.request.CreateUserRequest;
+import com.example.zalo.model.request.UpdateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -45,6 +48,39 @@ public class UserMapper {
         return user;
     }
 
+    public static User toUser(ChangePasswordRequest request, String username) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(request.getPassword());
 
+        return user;
+    }
+    public static User toUser(UpdateUserRequest request, int id) {
+        User user = new User();
+        user.setId(id);
+        user.setUsername(request.getUsername());
+        user.setLinkAvatar(request.getLinkAvatar());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setGender(request.getGender());
+        user.setDob(request.getDob());
+        user.setJoinedDate(request.getJoinedDate());
 
+        user.setStatus(request.getStatus());
+        return user;
+    }
+    public static User mergeUpdate(UpdateUserRequest request, User user) {
+        Integer idInteger = user.getAuthority().getId();
+        user.setUsername(request.getUsername());
+        user.setLinkAvatar(request.getLinkAvatar());
+        user.setDob(request.getDob());
+        user.setJoinedDate(request.getJoinedDate());
+        user.setGender(request.getGender());
+        user.setAuthority(new Authority(idInteger, user, request.getAuthority()));
+        return user;
+    }
+    public static User mergeDisable(UpdateUserRequest request, User user) {
+        user.setStatus("disabled");;
+        return user;
+    }
 }

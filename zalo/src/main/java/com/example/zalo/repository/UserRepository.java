@@ -22,11 +22,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   @Transactional
   @Modifying
-  @Query(value = "UPDATE user SET password = ?1 ,first_login =?2 WHERE username = ?3", nativeQuery = true)
-  void updatePassword(String password,String firstLogin, String username);
+  @Query(value = "UPDATE user SET password = ?1  WHERE username = ?2", nativeQuery = true)
+  void updatePassword(String password, String username);
 
 
-  //used to filter user with type: Admin or Staff
+  //used to filter user with type: Admin or user
   List<User> findByAuthority_authorityAndStatus(String authority, String status);
 
   @Query(value = "SELECT COUNT(*) FROM user u WHERE u.username LIKE :username% ", nativeQuery = true)
@@ -34,6 +34,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   
   //used to search user by fullName or staffCode
   @Query(value = "SELECT * FROM user WHERE (CONCAT(first_name, \" \", last_name) LIKE :fullName "
-  		+ "OR staff_code = :staffCode) AND status = 'enabled'", nativeQuery = true)
-  List<User> findUserByFullNameOrStaffCode(String fullName, String staffCode);
+  		+ "OR id = :id) AND status = 'enabled'", nativeQuery = true)
+  List<User> findUserByFullNameOrId(String fullName, String id);
 }

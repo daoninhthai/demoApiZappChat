@@ -5,7 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.example.zalo.model.dto.UserDTO;
+import com.example.zalo.model.request.ChangePasswordRequest;
 import com.example.zalo.model.request.CreateUserRequest;
+import com.example.zalo.model.request.UpdateUserRequest;
 import com.example.zalo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -36,12 +38,17 @@ public class UserController {
     }
 
 
-    @GetMapping("/users")
-    public ResponseEntity<?> getAllPosts(){
-        List<UserDTO> posts = userService.getAllUser();
-        return ResponseEntity.ok(posts);
-    }
+//    @GetMapping("/users")
+//    public ResponseEntity<?> getAllUsers(){
+//        List<UserDTO> posts = userService.getAllUser();
+//        return ResponseEntity.ok(posts);
+//    }
 
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(name = "type", required = false) String type, @RequestParam(name = "searchTerm", required = false) String keyword) {
+        List<UserDTO> users = userService.getUsers(type, keyword);
+        return ResponseEntity.ok(users);
+    }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
@@ -51,12 +58,12 @@ public class UserController {
 
 
 
-//    @GetMapping("/my-info")
-//    public ResponseEntity<?> getUserByUsername(Principal principal) {
-//        String username = principal.getName();
-//        UserDTO result = userService.findByUserName(username);
-//        return ResponseEntity.ok(result);
-//    }
+    @GetMapping("/my-info")
+    public ResponseEntity<?> getUserByUsername(Principal principal) {
+        String username = principal.getName();
+        UserDTO result = userService.findByUserName(username);
+        return ResponseEntity.ok(result);
+    }
 
 
 
@@ -66,5 +73,21 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+    @PutMapping("/users/{id}")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
+        UserDTO result = userService.updateUser(request, id);
+        return ResponseEntity.ok(result);
+    }
 
+    @PutMapping("/users/status/{id}")
+    public ResponseEntity<?> changeUserStatus(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
+        UserDTO result = userService.disableUser(request, id);
+        return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/change-password/{username}")
+    public ResponseEntity<?> changeUserPassword(@Valid @RequestBody ChangePasswordRequest request, @PathVariable String username) {
+        UserDTO result = userService.changePassword(request, username);
+        return ResponseEntity.ok(result);
+    }
 }
