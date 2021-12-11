@@ -3,19 +3,19 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
 import {useEffect, useRef, useMemo, useState} from 'react';
-import ChangeStatus from '../changeStatus/ChangeStatus';
+
 import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
 import React from 'react';
-import ViewDetailedUser from "../viewDetails/ViewDetailedUser"
+import ViewDetailedPost from "../viewDetails/ViewDetailedPost"
 import axios from "axios";
 import {useHistory} from 'react-router-dom'
 import dateFormat from 'dateformat';
 
 import '../../../../style/style.css'
-import ChangeStatusFail from "../changeStatus/ChangeStatusFail";
 
-const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUser}) => {
+
+const ManagePost = ({responsePost, setChildPage, setCurrentPages, setResponsePost}) => {
 
     const token = localStorage.getItem('jwttoken')
     const headers = {
@@ -23,41 +23,39 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
     };
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
-    const [usersPerPage] = useState(10);
+    const [postsPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState(null);
-    const indexOfLastUser = currentPage * usersPerPage;
-    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const [refresh, setRefresh] = useState(true);
     const [disable, setDisable] = useState("false");
     const paginate = pageNumber => setCurrentPage(pageNumber);
     const history = useHistory();
 
     const [list, setList] = useState([{
-        staffCode: null,
-        firstName: null,
-        lastName: null,
-        username: null,
-        joinedDate: null,
-        authority: null,
-        status: null,
-        assignments: [{
-            state: null
-        }]
+      
+        media: null,
+        content: null,
+        author: null,
+        joinedDate: null
+    
+  
+     
     }]);
     console.log(list)
     useEffect(() => {
-        axios.get(rootAPI + '/users', {headers})
+        axios.get(rootAPI + '/posts', {headers})
             .then(function (response) {
                 setDisable(false);
                 setRefresh(true);
-                setCurrentPages("Manage User")
-                let result = response.data.map(user => user.id);
-                if (responseUser && result.includes(responseUser.id)) {
-                    const index = result.indexOf(responseUser.id);
-                    const newUser = response.data.splice(index, 1)[0];
-                    response.data.unshift(newUser);
+                setCurrentPages("Manage Post")
+                let result = response.data.map(post => post.id);
+                if (responsePost && result.includes(responsePost.id)) {
+                    const index = result.indexOf(responsePost.id);
+                    const newPost = response.data.splice(index, 1)[0];
+                    response.data.unshift(newPost);
                     setList(response.data);
-                    setResponseUser(null);
+                    setResponsePost(null);
                 } else {
                     setList(response.data);
                 }
@@ -96,7 +94,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
             request.params.searchTerm = null;
 
         }
-        axios.get(rootAPI + '/users', request)
+        axios.get(rootAPI + '/posts', request)
             .then(function (response) {
                 setCurrentPage(1);
                 setList(response.data);
@@ -139,9 +137,9 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
 
     return (
         <Container fluid className={"d-block ps-5"}>
-            <h3 className={"text-primary mb-3"}>User List</h3>
+            <h3 className={"text-primary mb-3"}>Post List</h3>
             <div className={"justify-content-between d-flex"}>
-                <div className={"col-3 d-flex"}>
+                {/* <div className={"col-3 d-flex"}>
                     <InputGroup className={"w-50"}>
                         <Form.Control
                             as="select"
@@ -153,7 +151,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                         >
                             <option value={"Type"}>Type</option>
                             <option value="admin">Admin</option>
-                            <option value="user">User</option>
+                            <option value="post">Post</option>
                         </Form.Control>
                         <Button variant={"outline-secondary"}
                                 className={"border-start-0"}
@@ -161,7 +159,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                             <i className="bi bi-funnel-fill"/>
                         </Button>
                     </InputGroup>
-                </div>
+                </div> */}
                 <div className={"col-6 d-flex justify-content-end"}>
                     <InputGroup className={"w-50"}>
                         <FormControl
@@ -181,11 +179,11 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                         variant={"primary"}
                         className={"w-auto ms-5"}
                         onClick={() => {
-                            setChildPage("Create New User");
-                            history.push("/createuser");
+                            setChildPage("Create New Post");
+                            history.push("/createpost");
                         }}
                     >
-                        Create new user
+                        Create new post
                     </Button>
                 </div>
             </div>
@@ -195,45 +193,40 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                     <tr>
                         <th
                             className={"border-bottom"}
-                            className={getClassNamesFor("staffCode")}
-                            onClick={() => requestSort("staffCode")}
+                            className={getClassNamesFor("media")}
+                            onClick={() => requestSort("media")}
                         >
-                            Staff Code
+                            Media
                         </th>
                         <th
                             className={"border-bottom"}
-                            className={getClassNamesFor("firstName")}
-                            onClick={() => requestSort("firstName")}
+                            className={getClassNamesFor("content")}
+                            onClick={() => requestSort("content")}
                         >
-                            Full Name
+                            Content
                         </th>
-                        <th
-                            className={"border-bottom"}
-                            className={getClassNamesFor("username")}
-                            onClick={() => requestSort("username")}
-                        >
-                            User Name
-                        </th>
+                
                         <th
                             className={"border-bottom"}
                             className={getClassNamesFor("joinedDate")}
                             onClick={() => requestSort("joinedDate")}
                         >
-                            Joined Date
+                            Updated
                         </th>
                         <th
                             className={"border-bottom"}
-                            className={getClassNamesFor("authority")}
-                            onClick={() => requestSort("authority")}
+                            className={getClassNamesFor("author")}
+                            onClick={() => requestSort("author")}
                         >
-                            Type
+                            Author
                         </th>
+                       
                     </tr>
                     </thead>
                     <tbody>
-                    {list.slice(indexOfFirstUser, indexOfLastUser).map((user) => (
+                    {list.slice(indexOfFirstPost, indexOfLastPost).map((post) => (
                         <Popup
-                            key={user.id}
+                            key={post.id}
                             contentStyle={{
                                 width: "25%",
                                 border: "1px solid black",
@@ -242,23 +235,21 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                                 padding: "20px",
                             }}
                             trigger={
-                                <tr key={user.id}>
-                                    <td>{user.staffCode}</td>
-                                    <td>
-                                        {user.firstName} {user.lastName}
-                                    </td>
-                                    <td>{user.username}</td>
-                                    <td>{dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
-                                    <td>{capitalizeFirstLetter(user.authority)}</td>
+                                <tr key={post.id}>
+                                    <td>{post.media}</td>
+                                   
+                                    <td>{post.content}</td>
+                                    <td>{dateFormat(post.updated , "dd/mm/yyyy")}</td>
+                                    <td>{capitalizeFirstLetter(post.author)}</td>
                                     <td>
                                         <i className="bi bi-pen btn m-0 text-muted p-0 zoomin"
                                            onClick={() => {
-                                               setChildPage("Edit User");
-                                               history.push(`/edituser/${user.id}`)
+                                               setChildPage("Edit Post");
+                                               history.push(`/editpost/${post.id}`)
                                            }}
                                         />
                                     </td>
-                                    <Popup
+                                    {/* <Popup
                                         contentStyle={{
                                             width: "27%",
                                             border: "1px solid black",
@@ -274,17 +265,17 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                                         closeOnDocumentClick={false}
                                     >
                                         {(close) => {
-                                            if (user.assignments?.length !== 0) {
+                                            if (post.assignments?.length !== 0) {
                                                 return <ChangeStatusFail close={close}/>;
                                             } else {
-                                                return <ChangeStatus id={user.id}
+                                                return <ChangeStatus id={post.id}
                                                                      close={close}
                                                                      setRefresh={setRefresh}
                                                                      setDisable={setDisable}
                                                 />;
                                             }
                                         }}
-                                    </Popup>
+                                    </Popup> */}
                                 </tr>
                             }
                             modal
@@ -292,7 +283,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                         >
                             {(close) => (
                                 <div>
-                                    <ViewDetailedUser id={user.id}/>
+                                    <ViewDetailedPost id={post.id}/>
                                     <Button
                                         onClick={close}
                                         variant="success"
@@ -309,12 +300,12 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
             </Row>
             <Pagination
                 className="pagnition"
-                usersPerPage={usersPerPage}
-                totalUsers={list.length}
+                postsPerPage={postsPerPage}
+                totalPosts={list.length}
                 paginate={paginate}
             />
         </Container>
     );
 };
 
-export default ManageUser;
+export default ManagePost;

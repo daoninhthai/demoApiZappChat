@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import dateFormat from 'dateformat';
 
-const ViewDetailedUser = props => {
+const ViewDetailedPost = props => {
 
 
 
@@ -18,79 +18,54 @@ const ViewDetailedUser = props => {
 };
   const rootAPI = process.env.REACT_APP_SERVER_URL;
   let {id} = props;
-  const [user, setUser] = useState({
+  const [post, setPost] = useState({
     id: "",
-    staff_code: "",
-    username: "",
-    first_name: "",
-    last_name: "",
-    authority: "",
-    dob: "",
-    joined_date: "",
-    location: "",
-    status:""
+  
+
+ 
+
+    author: "",
+
+    updated: "",
+
+    content:"",
+    media:""
   });
   
   useEffect(() => {
-    loadUser();
+    loadPost();
   }, []);
-  const loadUser = async () => {
-    const res = await axios.get(rootAPI+`/users/${id}` ,{headers});
-    setUser(res.data);
+  const loadPost = async () => {
+    const res = await axios.get(rootAPI+`/posts/${id}` ,{headers});
+    setPost(res.data);
   };
 
-  const checkStatus = (status) => {
-    if(status == 0){
-      return <span>Disable</span>
-    }
-    if(status == 1){
-      return <span>Enabled</span>
-    }
-  }
+
   return (
    <div >
-    <div><h3 className="title-detail-user">
-         Detailed information of user
+    <div><h3 className="title-detail-post">
+         Detailed information of post
          </h3></div>  
      <div>
      <table> 
        <tbody>
        <tr>
-         <td className="fields-name">Staff Code </td>
-         <td>: {user.staffCode}</td>
+         <td className="fields-name">Media </td>
+         <td>: {post.media}</td>
        </tr>
        <tr>
-         <td className="fields-name">Username</td>
-         <td>: {user.username}</td>
+         <td className="fields-name">Content</td>
+         <td>: {post.content}</td>
        </tr>
        <tr>
-         <td className="fields-name">First name </td>
-         <td>: {user.firstName}</td>
+         <td className="fields-name">Author </td>
+         <td>: {post.firstName}</td>
        </tr>
        <tr>
-         <td className="fields-name">Last name </td>
-         <td>: {user.lastName}</td>
+         <td className="fields-name">Updated </td>
+         <td>: {dateFormat(post.updated, "dd/mm/yyyy")}</td>
        </tr>
-       <tr>
-         <td className="fields-name">Type </td>
-         <td>: {user.authority}</td>
-       </tr>
-       <tr>
-         <td className="fields-name">Date of Birth </td>
-         <td>: {dateFormat(user.dob, "dd/mm/yyyy")}</td>
-       </tr>
-       <tr>
-         <td className="fields-name">Joined Date </td>
-         <td>: {dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
-       </tr>
-       <tr>
-         <td className="fields-name">Location </td>
-         <td>: {user.location}</td>
-       </tr>
-       <tr>
-         <td className="fields-name">Status </td>
-         <td>: {user.status} </td>
-       </tr>
+      
        </tbody>
      </table>
      </div>
@@ -99,4 +74,4 @@ const ViewDetailedUser = props => {
   );
 };
 
-export default ViewDetailedUser;
+export default ViewDetailedPost;

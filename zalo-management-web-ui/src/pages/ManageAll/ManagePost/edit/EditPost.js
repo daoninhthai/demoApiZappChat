@@ -11,7 +11,7 @@ import axios from "axios";
 import differenceInDays from 'date-fns/differenceInDays/index.js';
 import {differenceInYears} from "date-fns";
 
-const EditUser = ({setResponseUser, setChildPage}) => {
+const EditPost = ({setResponsePost, setChildPage}) => {
 
     const token = localStorage.getItem('jwttoken')
 
@@ -22,7 +22,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     let {id} = useParams();
     const history = useHistory();
-    const [user, setUser] = useState({
+    const [post, setPost] = useState({
         id: null,
         content: null,
         media: null,
@@ -30,9 +30,9 @@ const EditUser = ({setResponseUser, setChildPage}) => {
     });
     useEffect(() => {
         axios
-            .get(rootAPI + `/users/${id}`, {headers})
+            .get(rootAPI + `/posts/${id}`, {headers})
             .then(function (response) {
-                setUser(response.data);
+                setPost(response.data);
                 setGender(response.data.gender);
             });
     }, [id])
@@ -47,7 +47,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
 
     }
     const onSubmit = (values, {setSubmitting}) => {
-        let editUser = {
+        let editPost = {
       
             content: values.content,
             media: values.media,
@@ -55,10 +55,10 @@ const EditUser = ({setResponseUser, setChildPage}) => {
      
         }
         axios
-            .put(rootAPI + `/users/${id}`, editUser, {headers})
+            .put(rootAPI + `/posts/${id}`, editPost, {headers})
             .then((response) => {
                 setSubmitting(false);
-                setResponseUser({
+                setResponsePost({
                     id: response.data.id,
                  
                     content: response.data.content,
@@ -68,7 +68,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                     
                 });
                 setChildPage(null);
-                history.push("/user");
+                history.push("/post");
             });
     };
     const ValidateSchema = Yup.object().shape({
@@ -123,7 +123,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                 <p className={"w-25"}>Media</p>
                                 <FormControl
                                    
-                                    aria-label="Username"
+                                    aria-label="Postname"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     name="media"
@@ -148,7 +148,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                 <p className={"w-25"}>Content</p>
                                 <FormControl
                                    
-                                    aria-label="Username"
+                                    aria-label="Postname"
                                     aria-describedby="basic-addon1"
                                     className={"w-75"}
                                     name="content"
@@ -212,7 +212,7 @@ const EditUser = ({setResponseUser, setChildPage}) => {
                                     style={{width: "100px"}}
                                     onClick={() => {
                                         setChildPage(null);
-                                        history.push("/user")
+                                        history.push("/post")
                                     }}
                                 >
                                     CANCEL
@@ -227,4 +227,4 @@ const EditUser = ({setResponseUser, setChildPage}) => {
     );
 };
 
-export default EditUser;
+export default EditPost;
