@@ -15,7 +15,12 @@ public class ChatRoomService {
     @Autowired private ChatRoomRepository chatRoomRepository;
 
     public Optional<String> getChatId(
-            String senderId, String recipientId, boolean createIfNotExist) {
+            int senderId, int recipientId, boolean createIfNotExist) {
+          User sender = new User();
+          sender.setId(senderId);
+        User recipient = new User();
+        recipient.setId(senderId);
+
 
         return chatRoomRepository
                 .findBySenderIdAndRecipientId(senderId, recipientId)
@@ -30,15 +35,15 @@ public class ChatRoomService {
                     ChatRoom senderRecipient = ChatRoom
                             .builder()
                             .chatId(chatId)
-                            .senderId(senderId)
-                            .recipientId(recipientId)
+                            .senderId(sender)
+                            .recipientId(recipient)
                             .build();
 
                     ChatRoom recipientSender = ChatRoom
                             .builder()
                             .chatId(chatId)
-                            .senderId(recipientId)
-                            .recipientId(senderId)
+                            .senderId(recipient)
+                            .recipientId(sender)
                             .build();
                     chatRoomRepository.save(senderRecipient);
                     chatRoomRepository.save(recipientSender);

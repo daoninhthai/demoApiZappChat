@@ -17,18 +17,16 @@ public class ChatRoom {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
 
     @Column(name ="chat_id")
     private String chatId;
 
-    //    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    @Column(name ="sender_id")
-    private String senderId;
+    @OneToOne(cascade = CascadeType.ALL)
+   @JoinColumn(name = "sender_id", referencedColumnName = "id")
+    private User senderId;
 
-    //    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "recipient_id", referencedColumnName = "id")
-    @Column(name ="recipient_id")
-    private String recipientId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "recipient_id", referencedColumnName = "id")
+    private User recipientId;
 }

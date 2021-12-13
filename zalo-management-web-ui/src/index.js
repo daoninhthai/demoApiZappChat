@@ -35,7 +35,9 @@ axios.interceptors.response.use(
 
 
 ReactDOM.render(
-   <App/>,
+   
+    <App />,
+
     document.getElementById('root')
 );
 

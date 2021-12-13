@@ -11,7 +11,7 @@ import CreateUser from "../../pages/ManageAll/ManageUser/create/CreateUser";
 
 
 import EditUser from "../../pages/ManageAll/ManageUser/edit/EditUser"
-import Home from "../../pages/home/Home";
+import Chat from "../../chat/Chat";
 import {Link} from "react-router-dom";
 import {ListGroup} from "react-bootstrap";
 
@@ -68,20 +68,20 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                 <div className="navbar">
                     {authority === "user" ? (
                         <ul className="navbar-list">
-                            <Link to="/home" onClick={() => setCurrentPage("Home")}>
-                                <li className="navbar-list--item home-staff">Home</li>
+                            <Link to="/chat" onClick={() => setCurrentPage("Chat")}>
+                                <li className="navbar-list--item home-staff">Chat</li>
                             </Link>
                         </ul>
                     ) : (
                         <ListGroup className="navbar-list">
-                            <NavLink to="/home"
+                            <NavLink to="/chat"
                                      onClick={() => {
                                          setChildPage(null);
-                                         setCurrentPage("Home");
+                                         setCurrentPage("Chat");
                                      }}
                                      activeClassName={"custom-class"}
                             >
-                                <li className="navbar-list--item">Home</li>
+                                <li className="navbar-list--item">Chat</li>
                             </NavLink>
                             <NavLink to="/user"
                                      onClick={() => {
@@ -112,8 +112,8 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
             <div className="pages-container col-10">
                 {authority === "user" ? (
                     <Switch>
-                        <Route path={"/home"} exact>
-                            <Home/>
+                        <Route path={"/chat"} exact>
+                            <Chat/>
                         </Route>
                         <Route path={"/changepassword"}>
                             <UserInfo/>
@@ -121,8 +121,8 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                     </Switch>
                 ) : (
                     <Switch>
-                        <Route path={"/home"} exact>
-                            <Home/>
+                        <Route path={"/chat"} exact>
+                            <Chat/>
                         </Route>
                         <Route path={"/user"}>
                             <ManageUser setChildPage={setChildPage}
@@ -132,7 +132,7 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             />
                         </Route>
                         <Route path={"/home"}>
-                            <Home/>
+                            <Chat/>
                         </Route>
                         <Route path={"/changepassword"}>
                             <UserInfo/>

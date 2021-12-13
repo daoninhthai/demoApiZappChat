@@ -97,7 +97,7 @@ export default function SignIn() {
                 localStorage.setItem("jwttoken", "Bearer " + response.data.jwttoken);
                 localStorage.setItem("username", values.username);
                 localStorage.setItem("password", values.password);
-                window.location.href = "/home";
+                window.location.href = "/chat";
                 toast.success("Logging success");
             }).catch((error) => {
             console.log(error);

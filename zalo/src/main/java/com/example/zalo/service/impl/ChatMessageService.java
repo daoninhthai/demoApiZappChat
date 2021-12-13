@@ -24,12 +24,12 @@ public class ChatMessageService  {
         return chatMessage;
     }
 
-    public long countNewMessages(String senderId, String recipientId) {
+    public long countNewMessages(int senderId, int recipientId) {
         return repository.countBySenderIdAndRecipientIdAndStatus(
                 senderId, recipientId, MessageStatus.RECEIVED);
     }
 
-    public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
+    public List<ChatMessage> findChatMessages(int senderId, int recipientId) {
         var chatId = chatRoomService.getChatId(senderId, recipientId, false);
 
         var messages =
@@ -42,7 +42,7 @@ public class ChatMessageService  {
         return messages;
     }
 
-    public ChatMessage findById(String id) {
+    public ChatMessage findById(int id) {
         return repository
                 .findById(id)
                 .map(chatMessage -> {
@@ -52,7 +52,7 @@ public class ChatMessageService  {
                 .orElseThrow(() ->
                         new NotFoundException("can't find message (" + id + ")"));
     }
-    public void updateStatuses(String senderId, String recipientId, MessageStatus status) {
+    public void updateStatuses(int senderId, int recipientId, MessageStatus status) {
        repository.updateStatus(senderId,recipientId,status);
     }
 

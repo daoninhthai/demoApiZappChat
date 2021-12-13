@@ -93,5 +93,16 @@ public class User implements Serializable {
     public List<Block> blockedUser;
 
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "senderId")
+    public ChatMessage  senderId;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "recipientId")
+    public ChatMessage recipientId;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "senderId")
+    public ChatRoom  senderIdRoom;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "recipientId")
+    public ChatRoom recipientIdRoom;
 
 }

@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface ChatMessageRepository extends JpaRepository<ChatMessage,String> {
+public interface ChatMessageRepository extends JpaRepository<ChatMessage,Integer> {
     long countBySenderIdAndRecipientIdAndStatus(
-            String senderId, String recipientId, MessageStatus status);
+            int senderId, int recipientId, MessageStatus status);
 
     List<ChatMessage> findByChatId(String chatId);
 
     @Transactional
     @Modifying
     @Query(value = "UPDATE chat_message SET status = ?3 WHERE sender_id =  :?1  and recipient_id= :?2", nativeQuery = true)
-    void updateStatus(String senderId, String recipientId, MessageStatus status);
+    void updateStatus(int senderId, int recipientId, MessageStatus status);
 }
