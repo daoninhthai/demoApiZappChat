@@ -27,7 +27,8 @@ const ViewDetailedUser = props => {
     authority: "",
     dob: "",
     joined_date: "",
-
+    phone_number:"",
+    link_avatar:"",
     status:""
   });
   
@@ -83,7 +84,14 @@ const ViewDetailedUser = props => {
          <td className="fields-name">Joined Date </td>
          <td>: {dateFormat(user.joinedDate, "dd/mm/yyyy")}</td>
        </tr>
-    
+       <tr>
+         <td className="fields-name">Phone Number </td>
+         <td>: {user.phoneNumber} </td>
+       </tr>
+       <tr>
+         <td className="fields-name">Link Avatar </td>
+         <td>: {user.linkAvatar} </td>
+       </tr>
        <tr>
          <td className="fields-name">Status </td>
          <td>: {user.status} </td>

@@ -69,11 +69,11 @@ const EditUser = ({setResponseUser, setChildPage}) => {
             last_name: values.lastName,
             dob: values.dob,
             gender: gender,
-            joined_date: values.joinedDate,
+            joined_date: user.joinedDate,
             authority: values.authority,
             status: user.status,
-            link_avatar: user.linkAvatar,
-            phone_number: user.phoneNumber,
+            link_avatar: values.linkAvatar,
+            phone_number: values.phoneNumber,
             password: user.password
         }
         axios

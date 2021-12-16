@@ -34,4 +34,6 @@ public class UpdatePostRequest {
     )
     @JsonProperty("updated")
     private LocalDate updated;
+
+
 }

@@ -26,7 +26,9 @@ const EditPost = ({setResponsePost, setChildPage}) => {
         id: null,
         content: null,
         media: null,
-        updated: null,  
+        updated: null,
+        author:null
+       
     });
     useEffect(() => {
         axios
@@ -43,7 +45,8 @@ const EditPost = ({setResponsePost, setChildPage}) => {
         content: post.content,
         media: post.media,
         updated: post.updated,
-       
+        author:post.author
+    
 
     }
     const onSubmit = (values, {setSubmitting}) => {
@@ -51,8 +54,8 @@ const EditPost = ({setResponsePost, setChildPage}) => {
       
             content: values.content,
             media: values.media,
-            updated: values.updated
-     
+            updated: values.updated,
+            author_id: post.author
         }
         axios
             .put(rootAPI + `/posts/${id}`, editPost, {headers})
@@ -64,7 +67,7 @@ const EditPost = ({setResponsePost, setChildPage}) => {
                     content: response.data.content,
                     media: response.data.media,
                     updated: response.data.updated,
-                  
+                    author: response.data.author
                     
                 });
                 setChildPage(null);

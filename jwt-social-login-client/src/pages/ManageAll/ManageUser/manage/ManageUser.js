@@ -40,9 +40,7 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
         joinedDate: null,
         authority: null,
         status: null,
-        assignments: [{
-            state: null
-        }]
+      
     }]);
     console.log(list)
     useEffect(() => {
@@ -274,15 +272,13 @@ const ManageUser = ({responseUser, setChildPage, setCurrentPages, setResponseUse
                                         closeOnDocumentClick={false}
                                     >
                                         {(close) => {
-                                            if (user.assignments?.length !== 0) {
-                                                return <ChangeStatusFail close={close}/>;
-                                            } else {
+                                           
                                                 return <ChangeStatus id={user.id}
                                                                      close={close}
                                                                      setRefresh={setRefresh}
                                                                      setDisable={setDisable}
                                                 />;
-                                            }
+                                            
                                         }}
                                     </Popup>
                                 </tr>

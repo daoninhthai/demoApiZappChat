@@ -77,6 +77,7 @@ public class PostServiceImpl implements PostService {
         }
 
         Post updatePost = PostMapper.toPost(request, id);
+        updatePost.setAuthor(post.get().getAuthor());
         try {
             postRepository.save(updatePost);
         } catch (Exception ex) {

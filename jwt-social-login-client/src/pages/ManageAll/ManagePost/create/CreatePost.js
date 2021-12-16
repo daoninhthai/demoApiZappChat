@@ -34,7 +34,7 @@ const CreatePost = ({setResponsePost, setChildPage}) => {
             content: values.content,
             media: values.media,
             updated: values.updated,
-            author:values.author
+            author_id:values.author
         }
 
         axios
@@ -66,7 +66,7 @@ const CreatePost = ({setResponsePost, setChildPage}) => {
             .typeError('Media is required'),
        
         
-        joinedDate: Yup.date()
+        updated: Yup.date()
             .required()
             .typeError('updated is required')
            

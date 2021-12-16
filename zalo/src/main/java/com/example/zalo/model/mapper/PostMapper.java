@@ -34,6 +34,7 @@ public class PostMapper {
     public static Post toPost(UpdatePostRequest request,int id) {
         Post post = new Post();
 
+
         post.setId(id);
         post.setContent(request.getContent());
         post.setMedia(request.getMedia());

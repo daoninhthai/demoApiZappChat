@@ -42,8 +42,7 @@ public class Post {
     @ToString.Exclude
     private List<Comment> comments;
 
-//    @OneToMany(mappedBy = "likePost" ,cascade = CascadeType.ALL)
-//    private  List<Like> like;    like la 1 thuoc tinh cua post
+
 
 
 

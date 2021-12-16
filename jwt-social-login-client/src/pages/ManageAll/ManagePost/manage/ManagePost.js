@@ -3,7 +3,8 @@ import './Manage.css'
 import 'reactjs-popup/dist/index.css';
 import {Button, Container, Form, FormControl, InputGroup, Row, Table} from 'react-bootstrap';
 import {useEffect, useRef, useMemo, useState} from 'react';
-
+import Delete from "../delete/Delete";
+import DeleteFail from "../delete/DeleteFail";
 import Pagination from '../../../../components/Pagination/Pagination'
 import Popup from "reactjs-popup";
 import React from 'react';
@@ -21,13 +22,14 @@ const ManagePost = ({responsePost, setChildPage, setCurrentPages, setResponsePos
     const headers = {
         'Authorization': token
     };
+    
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(10);
     const [sortConfig, setSortConfig] = useState(null);
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const [refresh, setRefresh] = useState(true);
+    const [refreshList, setRefreshList] = useState(false);
     const [disable, setDisable] = useState("false");
     const paginate = pageNumber => setCurrentPage(pageNumber);
     const history = useHistory();
@@ -47,7 +49,7 @@ const ManagePost = ({responsePost, setChildPage, setCurrentPages, setResponsePos
         axios.get(rootAPI + '/posts', {headers})
             .then(function (response) {
                 setDisable(false);
-                setRefresh(true);
+              
                 setCurrentPages("Manage Post")
                 let result = response.data.map(post => post.id);
                 if (responsePost && result.includes(responsePost.id)) {
@@ -58,9 +60,10 @@ const ManagePost = ({responsePost, setChildPage, setCurrentPages, setResponsePos
                     setResponsePost(null);
                 } else {
                     setList(response.data);
-                }
+                }  
+                setRefreshList(false);
             })
-    }, [refresh])
+    }, [refreshList])
 
     const [type, setType] = useState();
     const [searchTerm, setSearchTerm] = useState();
@@ -191,6 +194,13 @@ const ManagePost = ({responsePost, setChildPage, setCurrentPages, setResponsePos
                 <Table>
                     <thead>
                     <tr>
+                    <th
+                            className={"border-bottom"}
+                            className={getClassNamesFor("id")}
+                            onClick={() => requestSort("id")}
+                        >
+                          ID
+                        </th>
                         <th
                             className={"border-bottom"}
                             className={getClassNamesFor("media")}
@@ -236,6 +246,7 @@ const ManagePost = ({responsePost, setChildPage, setCurrentPages, setResponsePos
                             }}
                             trigger={
                                 <tr key={post.id}>
+                                    <td>{post.id}</td>
                                     <td>{post.media}</td>
                                    
                                     <td>{post.content}</td>
@@ -249,33 +260,24 @@ const ManagePost = ({responsePost, setChildPage, setCurrentPages, setResponsePos
                                            }}
                                         />
                                     </td>
-                                    {/* <Popup
-                                        contentStyle={{
-                                            width: "27%",
-                                            border: "1px solid black",
-                                            borderRadius: 10,
-                                            overflow: "hidden",
-                                        }}
-                                        trigger={
-                                            <td>
-                                                <i className="bi bi-x-circle text-danger btn p-0 zoomin"/>
-                                            </td>
-                                        }
-                                        modal
-                                        closeOnDocumentClick={false}
-                                    >
-                                        {(close) => {
-                                            if (post.assignments?.length !== 0) {
-                                                return <ChangeStatusFail close={close}/>;
-                                            } else {
-                                                return <ChangeStatus id={post.id}
-                                                                     close={close}
-                                                                     setRefresh={setRefresh}
-                                                                     setDisable={setDisable}
-                                                />;
-                                            }
-                                        }}
-                                    </Popup> */}
+                                    <Popup contentStyle={{
+                                    width: "25%", border: "1px solid black", borderRadius: 10,
+                                    overflow: 'hidden'
+                                }}
+                                       trigger={<td><i className="bi bi-x-circle text-danger btn p-0 zoomin"/></td>}
+                                       modal
+                                       closeOnDocumentClick={false}
+                                >
+                                   
+                                   {(close) => { return <Delete id={post.id}
+                                                         close={close}
+                                                         setRefreshList={setRefreshList}
+                                                         setDisable={setDisable}
+                                                         />;
+                                            
+                                                        }}
+                                      
+                                </Popup>
                                 </tr>
                             }
                             modal
