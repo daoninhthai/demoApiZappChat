@@ -36,4 +36,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
   @Query(value = "SELECT * FROM user WHERE (CONCAT(first_name, \" \", last_name) LIKE :fullName "
   		+ "OR id = :id) AND status = 'enabled'", nativeQuery = true)
   List<User> findUserByFullNameOrId(String fullName, String id);
+
+
+
 }

@@ -12,7 +12,8 @@ import java.util.List;
 @Service
 public interface PostService {
     List<PostDTO> getAllPost();
-
+    List<PostDTO> getAllUserPost(int authorId);
+    PostDTO getPostById(int id);
     PostDTO createPost(CreatePostRequest request,int authorId);
 
     PostDTO updatePost(UpdatePostRequest request, int id);

@@ -64,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**/chat").permitAll()
 				.antMatchers("/**/chat/**").permitAll()
 				.antMatchers("/chat/**").permitAll()
+		        .antMatchers("**/messages/**").permitAll()
 				.antMatchers("/**/categories/**", "/**/assignments/**", 
 						"/**/assets/**" ).hasAnyRole("ADMIN")
 				.antMatchers("/**/users/**").permitAll()

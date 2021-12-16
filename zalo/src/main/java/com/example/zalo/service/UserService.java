@@ -2,6 +2,7 @@ package com.example.zalo.service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 
 import com.example.zalo.entity.User;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-
+    List<User> findAll();
     List<UserDTO> getAllUser();
 
     UserDTO findByUserName(String username);
@@ -39,5 +40,5 @@ public interface UserService {
 
     UserDTO changePassword(ChangePasswordRequest request, String username);
 
-
+    Optional<User> findByUsername(String username);
 }

@@ -18,12 +18,12 @@ import com.example.zalo.model.mapper.UserMapper;
 import com.example.zalo.model.request.ChangePasswordRequest;
 import com.example.zalo.model.request.CreateUserRequest;
 import com.example.zalo.model.request.UpdateUserRequest;
+import com.example.zalo.repository.UserChatRepository;
 import com.example.zalo.repository.UserRepository;
 import com.example.zalo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +31,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserChatRepository userChatRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserChatRepository userChatRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userChatRepository = userChatRepository;
 
         this.passwordEncoder = passwordEncoder;
     }
 
+    public List<User> findAll() {
+//        log.info("retrieving all users");
+        return userRepository.findAll();
+    }
     @Override
     public List<UserDTO> getAllUser() {
 
@@ -75,10 +81,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int getCurrentUserId(Principal principal) {
-        String username = principal.getName();
-        User user = userRepository.findByUsername(username);
-        int id = user.getId();
-        return id;
+//        String username = principal.getName();
+//        User user = userRepository.findByUsername(username);
+//        int id = user.getId();
+//        return id;
+        return 0;
     }
 
     @Override
@@ -178,5 +185,11 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDTO(updateUser);
     }
 
+
+
+    public Optional<User> findByUsername(String username) {
+
+        return userChatRepository.findByUsername(username);
+    }
 
 }

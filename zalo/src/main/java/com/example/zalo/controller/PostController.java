@@ -26,9 +26,27 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<?> getAllPosts(){
-        List<PostDTO> posts = postService.getAllPost();
+    public ResponseEntity<?> getAllPosts(Principal principal){
+        String username = principal.getName();
+        UserDTO userDTO =userService.findByUserName(username);
+        int authorId = userDTO.getId();
+        String authority = userDTO.getAuthority();
+        List<PostDTO> posts=null;
+        if(authority.equals("admin")){
+             posts= postService.getAllPost();
+        }
+        if(authority.equals("user")){
+            posts= postService.getAllUserPost(authorId);
+        }
+
+
         return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/posts/{id}")
+    public ResponseEntity<?> getPostById(@PathVariable int id) {
+        PostDTO result = postService.getPostById(id);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/posts")

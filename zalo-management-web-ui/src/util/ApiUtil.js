@@ -8,10 +8,10 @@ const request = (options) => {
     headers.append("Content-Type", "application/json");
   }
 
-  if (localStorage.getItem("accessToken")) {
+  if (localStorage.getItem("jwttoken")) {
     headers.append(
       "Authorization",
-      "Bearer " + localStorage.getItem("accessToken")
+      localStorage.getItem("jwttoken")
     );
   }
 
@@ -36,24 +36,17 @@ export function login(loginRequest) {
   });
 }
 
-export function facebookLogin(facebookLoginRequest) {
-  return request({
-    url: AUTH_SERVICE + "/facebook/signin",
-    method: "POST",
-    body: JSON.stringify(facebookLoginRequest),
-  });
-}
 
-export function signup(signupRequest) {
-  return request({
-    url: AUTH_SERVICE + "/users",
-    method: "POST",
-    body: JSON.stringify(signupRequest),
-  });
-}
+// export function signup(signupRequest) {
+//   return request({
+//     url: AUTH_SERVICE + "/users",
+//     method: "POST",
+//     body: JSON.stringify(signupRequest),
+//   });
+// }
 
 export function getCurrentUser() {
-  if (!localStorage.getItem("accessToken")) {
+  if (!localStorage.getItem("jwttoken")) {
     return Promise.reject("No access token set.");
   }
 
@@ -64,7 +57,7 @@ export function getCurrentUser() {
 }
 
 export function getUsers() {
-  if (!localStorage.getItem("accessToken")) {
+  if (!localStorage.getItem("jwttoken")) {
     return Promise.reject("No access token set.");
   }
 
@@ -75,7 +68,7 @@ export function getUsers() {
 }
 
 export function countNewMessages(senderId, recipientId) {
-  if (!localStorage.getItem("accessToken")) {
+  if (!localStorage.getItem("jwttoken")) {
     return Promise.reject("No access token set.");
   }
 
@@ -86,7 +79,7 @@ export function countNewMessages(senderId, recipientId) {
 }
 
 export function findChatMessages(senderId, recipientId) {
-  if (!localStorage.getItem("accessToken")) {
+  if (!localStorage.getItem("jwttoken")) {
     return Promise.reject("No access token set.");
   }
 
@@ -97,7 +90,7 @@ export function findChatMessages(senderId, recipientId) {
 }
 
 export function findChatMessage(id) {
-  if (!localStorage.getItem("accessToken")) {
+  if (!localStorage.getItem("jwttoken")) {
     return Promise.reject("No access token set.");
   }
 
