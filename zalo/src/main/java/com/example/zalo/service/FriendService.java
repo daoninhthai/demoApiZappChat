@@ -3,6 +3,7 @@ package com.example.zalo.service;
 import com.example.zalo.entity.User;
 import com.example.zalo.exception.NotFoundException;
 import com.example.zalo.model.dto.FriendDTO;
+import com.example.zalo.model.dto.PostDTO;
 import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.mapper.UserMapper;
 import com.example.zalo.model.request.CreateFriendRequest;
@@ -15,8 +16,9 @@ import java.util.Optional;
 public interface FriendService {
     List<FriendDTO> getAllFriend(int userId);
 
-
-
+    List<FriendDTO> getAllFriend();
+    List<FriendDTO> getAllFriendAccepted();
+    List<FriendDTO> getAllFriendAccepted(int userId);
 
     List<FriendDTO> getAllFriendRequest(int userId);
 

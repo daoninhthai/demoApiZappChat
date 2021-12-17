@@ -3,6 +3,7 @@ package com.example.zalo.repository;
 import com.example.zalo.entity.Authority;
 import com.example.zalo.entity.Comment;
 import com.example.zalo.entity.Friend;
+import com.example.zalo.entity.Post;
 import com.example.zalo.model.dto.FriendDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,6 +21,17 @@ public interface FriendRepository  extends JpaRepository<Friend, Integer> {
     @Query(value = "SELECT * FROM friend  WHERE  (user_a=?1 or user_b=?1) and state like '%accepted%'  ", nativeQuery = true)
     public List<Friend> getAllFriend(int userId);
 
+    //admin
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT * FROM friend  WHERE   state like '%accepted%'  ", nativeQuery = true)
+    public List<Friend> getAllFriendAccepted();
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "SELECT * FROM friend  WHERE  user_a=?1 or user_b=?1", nativeQuery = true)
+    public List<Friend> getAllListFriend(int userId);
 
 
     @Transactional
@@ -32,4 +44,6 @@ public interface FriendRepository  extends JpaRepository<Friend, Integer> {
     @Modifying
     @Query(value = "UPDATE friend SET state = ?2 WHERE fid = ?1", nativeQuery = true)
     void acceptFriendRequest(int id, String state);
+
+
 }

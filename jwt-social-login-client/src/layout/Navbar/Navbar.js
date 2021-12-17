@@ -25,6 +25,10 @@ import logo from "../../resources/logo.jpg";
 import CreatePost from "../../pages/ManageAll/ManagePost/create/CreatePost";
 import EditPost from "../../pages/ManageAll/ManagePost/edit/EditPost";
 import ManagePost from "../../pages/ManageAll/ManagePost/manage/ManagePost";
+
+// import CreateFriend from "../../pages/ManageAll/ManageFriend/create/CreateFriend";
+// import EditFriend from "../../pages/ManageAll/ManageFriend/edit/EditFriend";
+// import ManageFriend from "../../pages/ManageAll/ManageFriend/manage/ManageFriend";
 const Navbar = ({setCurrentPage, setChildPage}) => {
     const rootAPI = process.env.REACT_APP_SERVER_URL;
     const [authority, setAuthority] = useState([{
@@ -59,6 +63,14 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
         type: null
     });
   
+    // const [responseFriend, setResponseFriend] = useState({
+    //     id: null,
+    //     userA: null,
+    //     userB: null,
+    //     created: null,
+    //     state:null
+  
+    // });
   
     return (
         <div className="container1 d-flex">
@@ -102,7 +114,16 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             >
                                 <li className="navbar-list--item">Manage Post</li>
                             </NavLink>
-
+                            {/* <NavLink
+                                to="/friend"
+                                onClick={() => {
+                                    setChildPage(null);
+                                    setCurrentPage("Manage Friend")
+                                }}
+                                activeClassName={"custom-class"}
+                            >
+                                <li className="navbar-list--item">Manage Friend</li>
+                            </NavLink> */}
                          
                     
                         </ListGroup>
@@ -157,6 +178,20 @@ const Navbar = ({setCurrentPage, setChildPage}) => {
                             <EditPost setChildPage={setChildPage} setResponsePost={setResponsePost}/>
                         </Route>
                      
+
+                        {/* <Route path={"/friend"}>
+                            <ManageFriend setCurrentPages={setCurrentPage}
+                                         setChildPage={setChildPage}
+                                         responseFriend={responseFriend}
+                                         setResponseFriend={setResponseFriend}
+                            />
+                        </Route>
+                        <Route path={"/createfriend"}>
+                            <CreateFriend setChildPage={setChildPage} setResponsePost={setResponseFriend}/>
+                        </Route>
+                        <Route path={"/editfriend/:id"}>
+                            <EditPost setChildPage={setChildPage} setResponseFriend={setResponseFriend}/>
+                        </Route> */}
                        
                     </Switch>
                 )}

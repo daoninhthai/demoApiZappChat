@@ -7,8 +7,10 @@ import com.example.zalo.exception.DuplicateRecordException;
 import com.example.zalo.exception.InternalServerException;
 import com.example.zalo.exception.NotFoundException;
 import com.example.zalo.model.dto.FriendDTO;
+import com.example.zalo.model.dto.PostDTO;
 import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.mapper.FriendMapper;
+import com.example.zalo.model.mapper.PostMapper;
 import com.example.zalo.model.mapper.UserMapper;
 import com.example.zalo.model.request.CreateFriendRequest;
 import com.example.zalo.repository.FriendRepository;
@@ -27,9 +29,20 @@ public class FriendServiceImpl implements FriendService {
         this.friendRepository = friendRepository;
     }
 
+// user
     @Override
     public List<FriendDTO> getAllFriend(int userId) {
-        List<Friend> friends =friendRepository.getAllFriend(userId);
+        List<Friend> friends =friendRepository.getAllListFriend(userId);
+        List<FriendDTO> result = new ArrayList<>();
+        for (Friend friend:friends){
+            result.add(FriendMapper.toFriendDTO(friend));
+        }
+        return result;
+    }
+   //admin
+    @Override
+    public List<FriendDTO> getAllFriendAccepted() {
+        List<Friend> friends =friendRepository.getAllFriendAccepted();
         List<FriendDTO> result = new ArrayList<>();
         for (Friend friend:friends){
             result.add(FriendMapper.toFriendDTO(friend));
@@ -37,6 +50,26 @@ public class FriendServiceImpl implements FriendService {
         return result;
     }
 
+    //user
+    @Override
+    public List<FriendDTO> getAllFriendAccepted(int userId) {
+        List<Friend> friends =friendRepository.getAllFriend(userId);
+        List<FriendDTO> result = new ArrayList<>();
+        for (Friend friend:friends){
+            result.add(FriendMapper.toFriendDTO(friend));
+        }
+        return result;
+    }
+// admin
+    @Override
+    public List<FriendDTO> getAllFriend() {
+        List<Friend> friends =friendRepository.findAll();
+        List<FriendDTO> result = new ArrayList<>();
+        for (Friend friend:friends){
+            result.add(FriendMapper.toFriendDTO(friend));
+        }
+        return result;
+    }
 
 
     @Override

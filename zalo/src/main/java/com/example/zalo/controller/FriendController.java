@@ -37,12 +37,23 @@ public class FriendController {
 
         String username = principal.getName();
         UserDTO userDTO =userService.findByUserName(username);
-
+        String authority = userDTO.getAuthority();
         int userId = userDTO.getId();
 
-        List<FriendDTO> friends = friendService.getAllFriend(userId);
+        List<FriendDTO> friends =null;
+        if(authority.equals("admin")){
+            friends= friendService.getAllFriend();
+        }
+        if(authority.equals("user")){
+            friends=  friendService.getAllFriend(userId);
+        }
+
+
         return ResponseEntity.ok(friends);
     }
+
+
+
 
     @PostMapping("/friendRequest/{userBId}")
     public ResponseEntity<?> createFriendRequest(@Valid @RequestBody CreateFriendRequest request, @PathVariable int userBId,Principal principal) {
@@ -65,6 +76,12 @@ public class FriendController {
         int userId = userDTO.getId();
 
         List<FriendDTO> friends = friendService.getAllFriendRequest(userId);
+        return ResponseEntity.ok(friends);
+    }
+    //admin
+    @GetMapping("/allFriendAccepted")
+    public ResponseEntity<?> getAllFriendAccepted(){
+        List<FriendDTO> friends = friendService.getAllFriendAccepted();
         return ResponseEntity.ok(friends);
     }
 
