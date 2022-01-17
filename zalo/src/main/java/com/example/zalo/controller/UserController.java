@@ -189,8 +189,6 @@ try{
     ));
 }
 
-
-
     }
 
     @PutMapping("/users/status/{id}")

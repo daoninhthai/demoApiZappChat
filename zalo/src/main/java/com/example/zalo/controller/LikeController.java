@@ -61,6 +61,9 @@ public class LikeController {
     @DeleteMapping("/likes/post/{id}")
     public ResponseEntity<?> deleteLikeRequest(@PathVariable int id) {
         likeService.deleteLike(id);
-        return ResponseEntity.ok("Deleted like");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of(
+                        "code", "1000",
+                        "message", "Deleted like"));
     }
 }

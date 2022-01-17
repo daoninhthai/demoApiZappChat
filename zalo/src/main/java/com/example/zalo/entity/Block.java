@@ -28,7 +28,7 @@ public class Block {
     public User userA;
 
     @JoinColumn(name = "user_b")
-    @ManyToOne(optional = false)
+    @ManyToOne()
     public User userB;
 
 

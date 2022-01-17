@@ -59,7 +59,10 @@ public class BlockController {
         int userAId =userDTO.getId();
         try{
           blockService.createBlockChatRequest(userAId,userBId);
-          return ResponseEntity.ok("Block chat successfully");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(Map.of(
+                            "code", "1000",
+                            "message", "Block chat successfully"));
       }
         catch (BadRequestException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
@@ -85,7 +88,11 @@ public class BlockController {
         int userAId =userDTO.getId();
     try {
         blockService.createBlockDiaryRequest(userAId,userBId);
-        return ResponseEntity.ok("Block diary successfully");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of(
+                        "code", "1000",
+                        "message", "Block diary successfully"));
+
     }
     catch (BadRequestException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
@@ -112,7 +119,10 @@ public class BlockController {
         int userAId =userDTO.getId();
 try{
     blockService.createBlockUserRequest(userAId,userBId);
-    return ResponseEntity.ok("Block user successfully");
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(Map.of(
+                    "code", "1000",
+                    "message", "Block user successfully"));
 }
 catch (BadRequestException e){
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
@@ -140,7 +150,10 @@ catch (DuplicateRecordException e){
 
         try{
             blockService.createBlockUserCommentRequest(userAId,userBId);
-            return ResponseEntity.ok("Block user comment successfully");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(Map.of(
+                            "code", "1000",
+                            "message", "Block user  successfully"));
         }
         catch (BadRequestException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
@@ -159,29 +172,39 @@ catch (DuplicateRecordException e){
     }
 
 
-    @PostMapping("/blockCommentsRequest/{userBId}")
-    public ResponseEntity<?> createBlockCommentsRequest( @PathVariable int userBId,Principal principal) {
+    @PostMapping("/blockCommentsRequest/{postId}")
+    public ResponseEntity<?> createBlockCommentsRequest( @PathVariable int postId,Principal principal) {
         String phoneNumber = principal.getName();
         UserDTO userDTO =userService.findByPhoneNumber1(phoneNumber);
 
         int userAId =userDTO.getId();
 
 try{
-    blockService.createBlockCommentsRequest(userAId,userBId);
-    return ResponseEntity.ok("Block comments successfully");
+    blockService.createBlockCommentsRequest(userAId,postId);
+    return ResponseEntity.status(HttpStatus.OK)
+            .body(Map.of(
+                    "code", "1000",
+                    "message", "Block comments successfully"));
 }
-catch (BadRequestException e){
+catch (NullPointerException e){
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
-            "code", "1004",
-            "message", "Parameter value is invalid",
-            "note","Không thể block bản thân "
+            "code", "9992",
+            "message", "Post is not exited",
+            "note","Bài viết này không tồn tại "
     ));
 }
 catch (DuplicateRecordException e){
     return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
             "code", "1004",
             "message", "Action has been done previously by this user",
-            "note","Bạn đã block người này rồi "
+            "note","Bạn đã block bài này rồi "
+    ));
+}
+catch (BadRequestException e){
+    return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(Map.of(
+            "code", "1009",
+            "message", "Not access",
+            "note","Bạn không sở hữu bài viết này "
     ));
 }
     }
@@ -192,6 +215,9 @@ catch (DuplicateRecordException e){
     @DeleteMapping("/block/{id}")
     public ResponseEntity<?> deleteBlockRequest(@PathVariable int id) {
         blockService.deleteBlockRequest(id);
-        return ResponseEntity.ok("Deleted block");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of(
+                        "code", "1000",
+                        "message", "Deleted Block"));
     }
 }
