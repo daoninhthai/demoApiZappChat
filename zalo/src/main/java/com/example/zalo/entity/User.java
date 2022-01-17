@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -24,16 +25,16 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "username", unique = true, nullable = false)
-    private String username;
+    @Column(name = "phone_number", unique = true, nullable = false)
+    private String phoneNumber;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name ="first_name", nullable = false)
+    @Column(name ="first_name")
     private String firstName;
 
-    @Column(name ="last_name", nullable = false)
+    @Column(name ="last_name")
     private String lastName;
 
     @Column(name ="dob")
@@ -46,11 +47,10 @@ public class User implements Serializable {
 
     @Column(name ="joined_date")
 //    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate joinedDate;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime joinedDate;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+
 
     @Column(name ="status" )
     private String status;
@@ -77,6 +77,10 @@ public class User implements Serializable {
     @ToString.Exclude
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "peopleLikeId" ,cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private List<Like> likes;
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userA")

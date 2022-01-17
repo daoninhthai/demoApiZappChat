@@ -9,6 +9,7 @@ import com.example.zalo.service.UserService;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Component
 public class FriendMapper {
@@ -31,11 +32,11 @@ public class FriendMapper {
 
 
 
-    public static Friend toFriend(CreateFriendRequest request ) {
+    public static Friend toFriend() {
         Friend friend = new Friend();
-
+        LocalDateTime now = LocalDateTime.now();
         friend.setState("waiting");
-        friend.setCreated(request.getCreated());
+        friend.setCreated(now);
         return friend;
     }
 

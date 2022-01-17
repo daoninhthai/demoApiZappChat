@@ -1,19 +1,15 @@
 package com.example.zalo.service.impl;
 
+import com.example.zalo.entity.Block;
 import com.example.zalo.entity.Friend;
-import com.example.zalo.entity.Post;
 import com.example.zalo.entity.User;
-import com.example.zalo.exception.DuplicateRecordException;
-import com.example.zalo.exception.InternalServerException;
-import com.example.zalo.exception.NotFoundException;
+import com.example.zalo.exception.*;
 import com.example.zalo.model.dto.FriendDTO;
-import com.example.zalo.model.dto.PostDTO;
-import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.mapper.FriendMapper;
-import com.example.zalo.model.mapper.PostMapper;
-import com.example.zalo.model.mapper.UserMapper;
 import com.example.zalo.model.request.CreateFriendRequest;
+import com.example.zalo.repository.BlockRepository;
 import com.example.zalo.repository.FriendRepository;
+import com.example.zalo.repository.UserRepository;
 import com.example.zalo.service.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +20,13 @@ import java.util.Optional;
 @Service
 public class FriendServiceImpl implements FriendService {
     private final FriendRepository friendRepository;
+    private final UserRepository userRepository;
+    private final BlockRepository blockRepository;
     @Autowired
-    public FriendServiceImpl(FriendRepository friendRepository) {
+    public FriendServiceImpl(FriendRepository friendRepository, UserRepository userRepository, BlockRepository blockRepository) {
         this.friendRepository = friendRepository;
+        this.userRepository = userRepository;
+        this.blockRepository = blockRepository;
     }
 
 // user
@@ -84,9 +84,18 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public void createFriendRequest(CreateFriendRequest request,int userAId,int userBId) {
+    public void createFriendRequest(int userAId,int userBId) {
+        Block blockUser= blockRepository.checkBlockUser(userBId,userAId);
+        if(blockUser!=null){
+            throw new BadGuyException("user");
+        }
+
+        Optional<User> user2 = userRepository.findById(userBId);
+        if(user2.isEmpty()){
+            throw new NotFoundException("khong tim thay nguoi nay");
+        }
         if(userAId == userBId){
-            throw new DuplicateRecordException("You cannot send friend requests to yourself");
+            throw new BadRequestException("You cannot send friend requests to yourself");
         }
 
         List<Friend> friends= friendRepository.findAll();
@@ -96,7 +105,7 @@ public class FriendServiceImpl implements FriendService {
                     throw new DuplicateRecordException("You have sent a friend request to this person before");
                 }
                 if(f.getState().equals("accepted")){
-                    throw new DuplicateRecordException("You and this person are already friends");
+                    throw new BusinessException("You and this person are already friends");
 
                 }
             }
@@ -113,7 +122,7 @@ public class FriendServiceImpl implements FriendService {
         friend.setUserA(userA);
         friend.setUserB(userB);
 
-        friend= FriendMapper.toFriend(request);
+        friend= FriendMapper.toFriend();
         friend.setUserA(userA);
         friend.setUserB(userB);
 

@@ -9,6 +9,7 @@ import com.example.zalo.entity.User;
 import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.request.ChangePasswordRequest;
 import com.example.zalo.model.request.CreateUserRequest;
+import com.example.zalo.model.request.SignUpRequest;
 import com.example.zalo.model.request.UpdateUserRequest;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,11 @@ public interface UserService {
     List<User> findAll();
     List<UserDTO> getAllUser();
 
-    UserDTO findByUserName(String username);
+    UserDTO findByPhoneNumber1(String phoneNumber);
 
-    User findUserByUsername(String username);
+    User findUserByPhoneNumber(String phoneNumber);
 
-    UserDTO getUserById(int id);
+    UserDTO getUserById(int id,int userId);
 
     int getCurrentUserId(Principal principal);
 
@@ -38,7 +39,9 @@ public interface UserService {
 
     UserDTO createUser(CreateUserRequest request);
 
-    UserDTO changePassword(ChangePasswordRequest request, String username);
+    UserDTO changePassword(ChangePasswordRequest request, String phoneNumber);
 
-    Optional<User> findByUsername(String username);
+    Optional<User> findByPhoneNumber(String phoneNumber);
+
+    UserDTO signUp(SignUpRequest request);
 }

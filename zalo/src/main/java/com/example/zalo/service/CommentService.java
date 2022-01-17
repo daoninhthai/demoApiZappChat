@@ -15,9 +15,10 @@ import java.util.List;
 public interface CommentService {
 
     List<CommentDTO> getAllComment(int postId);
-    CommentDTO createComment(CreateCommentRequest request,int postId, int commentId);
+    CommentDTO createComment(CreateCommentRequest request,int postId, int commentatorId);
 
-    CommentDTO updateComment(UpdateCommentRequest request, int id);//id comment
+    CommentDTO updateComment(UpdateCommentRequest request, int id ,int userId);//id comment
 
-    void deleteComment(int id);//id comment
+    void deleteComment(int id,int userId);//id comment
+
 }

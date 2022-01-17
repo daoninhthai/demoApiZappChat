@@ -24,12 +24,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user =userService.findUserByUsername(username);
+    public UserDetails loadUserByUsername(String phoneNumber) throws UsernameNotFoundException {
+        User user =userService.findUserByPhoneNumber(phoneNumber);
         UserBuilder userBuilder =null;
 
         if(user!=null ) {
-            userBuilder= org.springframework.security.core.userdetails.User.withUsername(username);
+            userBuilder= org.springframework.security.core.userdetails.User.withUsername(phoneNumber);
             userBuilder.password(user.getPassword());
             userBuilder.roles(user.getAuthority().getAuthority());
             if(!user.getStatus().equals("enabled")){

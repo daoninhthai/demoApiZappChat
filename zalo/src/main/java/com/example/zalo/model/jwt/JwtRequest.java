@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class JwtRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private String username;
+	private String phoneNumber;
 	private String password;
 
 	/**
@@ -15,17 +15,17 @@ public class JwtRequest implements Serializable {
 		// nop
 	}
 
-	public JwtRequest(String username, String password) {
-		this.setUsername(username);
+	public JwtRequest(String phoneNumber, String password) {
+		this.setPhoneNumber(phoneNumber);
 		this.setPassword(password);
 	}
 
-	public String getUsername() {
-		return username;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public String getPassword() {

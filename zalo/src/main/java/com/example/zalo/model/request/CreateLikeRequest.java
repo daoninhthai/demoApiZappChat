@@ -14,20 +14,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UpdateCommentRequest {
-    @ApiModelProperty(
-            example="content",
-            required=true
-    )
-    @JsonProperty("content")
-    private String content;
+public class CreateLikeRequest {
 
 
+    @JsonProperty("user_id")
+    private Integer peopleLikeId;
 
-    @ApiModelProperty(
-            example="1999-06-02T21:33:45.249967",
-            required=true
-    )
     @JsonProperty("updated")
     private LocalDateTime updated;
+
+    @JsonProperty("post_id")
+    private Integer likePost;
 }

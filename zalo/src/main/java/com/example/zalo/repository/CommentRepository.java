@@ -15,7 +15,12 @@ import java.util.List;
 public interface CommentRepository  extends JpaRepository<Comment, Integer> {
     @Transactional
     @Modifying
-    @Query(value = "SELECT id,content, user_id , post_id, updated FROM comment  WHERE post_id = ?1 ", nativeQuery = true)
+    @Query(value = "SELECT id,content, user_id , post_id, created,updated FROM comment  WHERE post_id = ?1 ", nativeQuery = true)
     public List<Comment> getAllComment(int postId);
+
+//    @Transactional
+//    @Modifying
+//    @Query(value = "SELECT count(id) FROM comment  WHERE post_id = ?1 ", nativeQuery = true)
+//    public int countComment(int postId);
 
 }

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 public interface UserChatRepository  extends JpaRepository<User, Integer> {
-    Optional<User> findByUsername(String username);
+    Optional<User> findByPhoneNumber(String phoneNumber);
 }

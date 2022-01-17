@@ -26,8 +26,8 @@ public class UpdateUserRequest {
             notes="Username cannot be empty",
             required=true
     )
-    @JsonProperty("username")
-    private String username;
+    @JsonProperty("phone_number")
+    private String phoneNumber;
 
 
 
@@ -66,17 +66,6 @@ public class UpdateUserRequest {
     @JsonProperty("gender")
     private String gender;
 
-
-    @ApiModelProperty(
-            example="Th1",
-            notes="Last name cannot be empty",
-            required=true
-    )
-    @JsonProperty("phone_number")
-    private String phoneNumber;
-
-
-
     @ApiModelProperty(
             example="Th1",
             notes="Last name cannot be empty",
@@ -111,7 +100,7 @@ public class UpdateUserRequest {
             required=true
     )
     @JsonProperty("joined_date")
-    private LocalDate joinedDate;
+    private LocalDateTime joinedDate;
 
 
 

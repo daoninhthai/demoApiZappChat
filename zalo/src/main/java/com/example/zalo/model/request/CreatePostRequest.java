@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,7 +36,10 @@ public class CreatePostRequest {
             required=true
     )
     @JsonProperty("updated")
-    private LocalDate updated;
+    private LocalDateTime updated;
+
+    @JsonProperty("created")
+    private LocalDateTime created;
 
     @ApiModelProperty(
             example="123456",

@@ -20,31 +20,22 @@ public class UserDTO {
 
     private Integer id;
 
-
-    private String username;
-
+    private String phoneNumber;
 
     private String firstName;
 
-
     private String lastName;
-
 
     private LocalDate dob;
 
-
     private String gender;
 
-
-    private LocalDate joinedDate;
-
+    private LocalDateTime joinedDate;
 
     private String status;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
-
-    private String phoneNumber;
 
     private String linkAvatar;
 

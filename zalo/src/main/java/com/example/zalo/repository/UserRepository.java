@@ -18,19 +18,19 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   List<User> findByStatus(String status);
 
-  User findByUsername(String username);
+  User findByPhoneNumber(String phoneNumber);
 
   @Transactional
   @Modifying
-  @Query(value = "UPDATE user SET password = ?1  WHERE username = ?2", nativeQuery = true)
-  void updatePassword(String password, String username);
+  @Query(value = "UPDATE user SET password = ?1  WHERE phone_number = ?2", nativeQuery = true)
+  void updatePassword(String password, String phoneNumber);
 
 
   //used to filter user with type: Admin or user
   List<User> findByAuthority_authorityAndStatus(String authority, String status);
-
-  @Query(value = "SELECT COUNT(*) FROM user u WHERE u.username LIKE :username% ", nativeQuery = true)
-  Integer countByDuplicateFullName(String username);
+//
+//  @Query(value = "SELECT COUNT(*) FROM user u WHERE u.phone_number LIKE :phone_number% ", nativeQuery = true)
+//  Integer countByDuplicateFullName(String phoneNumber);
   
   //used to search user by fullName or staffCode
   @Query(value = "SELECT * FROM user WHERE (CONCAT(first_name, \" \", last_name) LIKE :fullName "

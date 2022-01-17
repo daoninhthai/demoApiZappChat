@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 @Getter
@@ -20,7 +21,7 @@ public class FriendDTO {
 
     private Integer userB;// người nhận
 
-    private LocalDate created;
+    private LocalDateTime created;
 
     private String  state;
 }

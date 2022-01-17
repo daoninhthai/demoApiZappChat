@@ -37,10 +37,10 @@ public class JwtAuthenticationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/api/v1/authenticate", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        authenticate(authenticationRequest.getPhoneNumber(), authenticationRequest.getPassword());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getPhoneNumber());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
@@ -49,7 +49,7 @@ public class JwtAuthenticationController {
 
     }
 
-    private void authenticate(String username, String password){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    private void authenticate(String phoneNumber, String password){
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(phoneNumber, password));
     }
 }

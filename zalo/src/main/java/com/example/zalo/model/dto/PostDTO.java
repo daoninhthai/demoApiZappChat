@@ -3,6 +3,7 @@ package com.example.zalo.model.dto;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.example.zalo.entity.User;
 import lombok.AllArgsConstructor;
@@ -25,10 +26,20 @@ public class PostDTO {
 
     private String media;
 
-    private LocalDate updated;
-
+    private LocalDateTime updated;
+    private LocalDateTime created;
     private Integer author;
 
+    private Integer numberOfLikes;
 
+    private Integer numberOfComments;
+
+//    private String isLiked;
+//
+//    private String isBlock;
+//
+//    private String canEdit;
+//
+//    private String canComment;
 
 }

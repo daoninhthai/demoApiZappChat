@@ -13,9 +13,15 @@ public interface BlockService {
 
     List<BlockDTO> getAllBlockDiary(int userId);// lấy ra danh sách những người mình block diary
 
-    void createBlockChatRequest( int userAId, int userBId);
+    void createBlockChatRequest( int userAId, int userBId);//chat
 
-    void createBlockDiaryRequest(CreateBlockRequest request, int userAId, int userBId);
+    void createBlockDiaryRequest( int userAId, int userBId);//post
+
+    void createBlockUserRequest( int userAId, int userBId);//user
+
+    void createBlockUserCommentRequest( int userAId, int userBId);//comment
+
+    void createBlockCommentsRequest( int userAId, int postId);//comments
 
     void deleteBlockRequest(int id);
 }

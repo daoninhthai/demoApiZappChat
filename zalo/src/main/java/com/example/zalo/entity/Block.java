@@ -27,7 +27,7 @@ public class Block {
     @ManyToOne(optional = false)
     public User userA;
 
-    @JoinColumn(name = "user_b", nullable = false, updatable = false)
+    @JoinColumn(name = "user_b")
     @ManyToOne(optional = false)
     public User userB;
 
@@ -39,6 +39,7 @@ public class Block {
     @Column(name = "state")
     private String state;
 
-
+    @Column(name ="post_id")
+    private int postId;
 
 }

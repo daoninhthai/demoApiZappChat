@@ -17,5 +17,27 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value = "SELECT * FROM post WHERE author_id = ?1 ", nativeQuery = true)
     List<Post> findPostByUserId(int id);
 
+    @Query(value = "SELECT * FROM post WHERE author_id = ?1 and id=?2", nativeQuery = true)
+    List<Post> findPostByUserIdAndPostId(int authorId,int id);
+
+
+
+//sai
+//    @Transactional
+//    @Modifying
+//    @Query(value = "select number_of_comments from post  WHERE id = ?1", nativeQuery = true)
+//     int findComment(int postId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE post SET number_of_comments = ?1  WHERE id = ?2", nativeQuery = true)
+    void updateComment(int comment, int postId);
+
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE post SET number_of_likes = ?1  WHERE id = ?2", nativeQuery = true)
+    void updateLike(int comment, int postId);
+
 
 }

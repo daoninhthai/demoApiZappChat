@@ -27,8 +27,8 @@ public class CreateUserRequest {
             notes="Username cannot be empty",
             required=true
     )
-    @JsonProperty("username")
-    private String username;
+    @JsonProperty("phone_number")
+    private String phoneNumber;
 
     @ApiModelProperty(
             example="123456",
@@ -80,7 +80,7 @@ public class CreateUserRequest {
             required=true
     )
     @JsonProperty("joined_date")
-    private LocalDate joinedDate;
+    private LocalDateTime joinedDate;
 
     @ApiModelProperty(
             example="enable",
@@ -107,13 +107,7 @@ public class CreateUserRequest {
 //    @JsonProperty("user_id")
 //    private User user;
 
-    @ApiModelProperty(
-            example="user",
-            notes=" 0123456789",
-            required=true
-    )
-    @JsonProperty("phone_number")
-    private String phoneNumber;
+
 
 
     @ApiModelProperty(

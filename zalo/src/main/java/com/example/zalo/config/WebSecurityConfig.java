@@ -52,23 +52,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable().authorizeRequests()
 				.antMatchers("/api/v1",
 						"/configuration/ui",
-						"/swagger-resources/**",
 						"/configuration/security",
-						"/swagger-ui.html",
 						"/v2/api-docs",
 						"/webjars/**").permitAll()
-				.antMatchers("/api/v1/authenticate").permitAll()
-
-
+				.antMatchers("/api/v1/login").permitAll()
 				.antMatchers("/**/change-password/**").permitAll()
-				.antMatchers("/**/chat").permitAll()
-				.antMatchers("/**/chat/**").permitAll()
-				.antMatchers("/chat/**").permitAll()
-		        .antMatchers("**/messages/**").permitAll()
-				.antMatchers("/**/categories/**", "/**/assignments/**", 
-						"/**/assets/**" ).hasAnyRole("ADMIN")
 				.antMatchers("/**/users/**").permitAll()
-				.antMatchers("/**/my-assignments", "/**/my-info/**", "/**/searchby", "/**/assignments/**").hasAnyRole( "ADMIN")
+				.antMatchers("/**/signup/**").permitAll()
 				.anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

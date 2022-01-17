@@ -1,23 +1,29 @@
 package com.example.zalo.controller;
 
 import java.security.Principal;
-import java.util.List;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.*;
 import javax.validation.Valid;
 
 import com.example.zalo.entity.User;
-import com.example.zalo.exception.NotFoundException;
+import com.example.zalo.exception.*;
 import com.example.zalo.model.InstaUserDetails;
 import com.example.zalo.model.UserSummary;
 import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.request.ChangePasswordRequest;
 import com.example.zalo.model.request.CreateUserRequest;
+import com.example.zalo.model.request.SignUpRequest;
 import com.example.zalo.model.request.UpdateUserRequest;
 import com.example.zalo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -47,56 +53,197 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable int id) {
-        UserDTO result = userService.getUserById(id);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> getUserById(@PathVariable int id, Principal principal) {
+        String username = principal.getName();
+        UserDTO userDTO =userService.findByPhoneNumber1(username);
+
+        int userId = userDTO.getId();
+
+try{
+    UserDTO result = userService.getUserById(id,userId);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Map.of(
+
+                "data",result
+        ));}
+catch (NotFoundException e) { return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+        "code", "9995",
+        "message", "User is not validated",
+        "note","Không có người dùng này"
+));
+}catch (InternalServerException e) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+        "code", "9995",
+        "message", "User is not validated",
+        "note","Người dùng này đã bị disable "
+));
+}
+catch (BadGuyException e){
+
+    return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(Map.of(
+            "code", "1009",
+            "message", "Not access",
+            "note","Chủ tài khoản đã chặn bạn"
+    ));
+}
+
     }
 
 
 
-    @GetMapping("/my-info")
+    @GetMapping("users/my-info")
     public ResponseEntity<?> getUserByUsername(Principal principal) {
         String username = principal.getName();
-        UserDTO result = userService.findByUserName(username);
+        UserDTO result = userService.findByPhoneNumber1(username);
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping(value = "/users/me", produces = MediaType.APPLICATION_JSON_VALUE)
 
-    @ResponseStatus(HttpStatus.OK)
-    public UserSummary getCurrentUser(@AuthenticationPrincipal UserDTO userDetails) {
-        return UserSummary
-                .builder()
-                .id(userDetails.getId())
-                .username(userDetails.getUsername())
-                .name(userDetails.getLastName())
-                .profilePicture(userDetails.getLinkAvatar())
-                .build();
-    }
 
     @PostMapping("/users")
     public ResponseEntity<?> createUser(@Valid @RequestBody CreateUserRequest request) {
-        UserDTO result = userService.createUser(request);
-        return ResponseEntity.ok(result);
+
+try {
+    UserDTO result = userService.createUser(request);
+    return ResponseEntity.ok(result);
+}
+catch (DuplicateRecordException e){
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+            "code", "9996",
+            "message", "User existed",
+            "note","Người dùng đã tồn tại"
+    ));
+}
+catch (InternalServerException ex){
+    return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(Map.of(
+                        "code", "1004",
+                        "message", "Parameter value is invalid",
+                        "note","Số điện thoại phải có số bắt đầu la 0 "
+                ));
+}
+catch (BusinessException e){
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                        "code", "1004",
+                        "message", "Parameter value is invalid",
+                        "note","Số điện thoại phải có độ dài từ 6 đến 10 số "
+                ));
+}
+
     }
 
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest request) {
+
+        try {
+            UserDTO result = userService.signUp(request);
+            return ResponseEntity.ok(result);
+        }
+        catch (DuplicateRecordException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "code", "9996",
+                    "message", "User existed",
+                    "note","Người dùng đã tồn tại"
+            ));
+        }
+        catch (InternalServerException ex){
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(Map.of(
+                    "code", "1004",
+                    "message", "Parameter value is invalid",
+                    "note","Số điện thoại phải có số bắt đầu la 0 "
+            ));
+        }
+        catch (BusinessException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                    "code", "1004",
+                    "message", "Parameter value is invalid",
+                    "note","Số điện thoại phải có độ dài từ 6 đến 10 số "
+            ));
+        }
+
+    }
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id ,Principal principal) {
+        String username = principal.getName();
+        UserDTO userDTO =userService.findByPhoneNumber1(username);
+
+        String role = userDTO.getAuthority();
+        int id1 = userDTO.getId();
+try{
+    if(role.equals("admin") || id1 == id){
         UserDTO result = userService.updateUser(request, id);
         return ResponseEntity.ok(result);
     }
+    else {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "code", "1009",
+                "message", "Not access",
+                "note","Chỉ có admin hoặc chủ tài khoản  mới có quyền update  user"
+        ));
+    }
+}catch (NotFoundException e){
+
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+            "code", "9995",
+            "message", "User is not validated",
+            "note","Không có người dùng này"
+    ));
+}
+
+
+
+    }
 
     @PutMapping("/users/status/{id}")
-    public ResponseEntity<?> changeUserStatus(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id) {
-        UserDTO result = userService.disableUser(request, id);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> changeUserStatus(@Valid @RequestBody UpdateUserRequest request, @PathVariable int id ,Principal principal) {
+        String username = principal.getName();
+        UserDTO userDTO =userService.findByPhoneNumber1(username);
+
+        String role = userDTO.getAuthority();
+        try{
+        if(role.equals("admin")){
+            UserDTO result = userService.disableUser(request, id);
+            return ResponseEntity.ok(result);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "code", "1009",
+                    "message", "Not access",
+                    "note","Chỉ có admin mới có quyền disable  user"
+            ));
+        }}
+    catch (NotFoundException e){
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "code", "9995",
+                "message", "User is not validated",
+                "note","Không có người dùng này"
+        ));
     }
 
-    @PutMapping("/change-password/{username}")
-    public ResponseEntity<?> changeUserPassword(@Valid @RequestBody ChangePasswordRequest request, @PathVariable String username) {
-        UserDTO result = userService.changePassword(request, username);
-        return ResponseEntity.ok(result);
+
+
+}
+
+    @PutMapping("/users/change-password")
+    public ResponseEntity<?> changeUserPassword(@Valid @RequestBody ChangePasswordRequest request,Principal principal) {
+        String username = principal.getName();
+try {
+    UserDTO result = userService.changePassword(request, username);
+    return ResponseEntity.ok(result);
+}  catch (InternalServerException e){
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+            "code", "1005",
+            "message", "Unknown Error"
+
+    ));
+}
+
     }
+
+
+
+
+
 
     @GetMapping(value = "/users/summaries", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findAllUserSummaries(
@@ -106,7 +253,7 @@ public class UserController {
         return ResponseEntity.ok(userService
                 .findAll()
                 .stream()
-                .filter(user -> !user.getUsername().equals(userDetails.getUsername()))
+                .filter(user -> !user.getPhoneNumber().equals(userDetails.getUsername()))
                 .map(this::convertTo));
     }
 
@@ -115,15 +262,30 @@ public class UserController {
 //        log.info("retrieving user {}", username);
 
         return  userService
-                .findByUsername(username)
+                .findByPhoneNumber(username)
                 .map(user -> ResponseEntity.ok(convertTo(user)))
                 .orElseThrow(() -> new NotFoundException(username));
     }
+
+
+    @GetMapping(value = "/users/me", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @ResponseStatus(HttpStatus.OK)
+    public UserSummary getCurrentUser(@AuthenticationPrincipal UserDTO userDetails) {
+        return UserSummary
+                .builder()
+                .id(userDetails.getId())
+                .username(userDetails.getPhoneNumber())
+                .name(userDetails.getLastName())
+                .profilePicture(userDetails.getLinkAvatar())
+                .build();
+    }
+
     private UserSummary convertTo(User user) {
         return UserSummary
                 .builder()
                 .id(user.getId())
-                .username(user.getUsername())
+                .username(user.getPhoneNumber())
                 .name(user.getLastName())
                 .profilePicture(user.getLinkAvatar())
                 .build();

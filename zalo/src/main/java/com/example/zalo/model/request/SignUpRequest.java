@@ -11,10 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ChangePasswordRequest {
-
-
+public class SignUpRequest {
+    @JsonProperty("phone_number")
+    private String phoneNumber;
     @JsonProperty("password")
     private String password;
-
 }

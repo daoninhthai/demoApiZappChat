@@ -29,4 +29,6 @@ public class BlockDTO {
 
     private String state;
 
+    private int postId;
+
 }

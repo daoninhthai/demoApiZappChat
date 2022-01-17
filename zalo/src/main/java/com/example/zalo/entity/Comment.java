@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -33,8 +35,12 @@ public class Comment {
     private String content;
 
     @Column(name ="updated")
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate updated;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updated;
+
+    @Column(name ="created")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime created;
 
 
     @ManyToOne

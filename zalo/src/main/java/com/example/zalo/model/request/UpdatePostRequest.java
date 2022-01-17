@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -33,7 +35,9 @@ public class UpdatePostRequest {
             required=true
     )
     @JsonProperty("updated")
-    private LocalDate updated;
+    private LocalDateTime updated;
+
+
 
 
 }

@@ -14,19 +14,9 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDTO {
-
+public class LikeDTO {
     private Integer id;
-
-
-    private  Integer user;
-
-
-    private String content;
-
-
+    private  Integer peopleLikeId;
     private LocalDateTime updated;
-    private LocalDateTime created;
-
-    private Integer post;
+    private Integer likePost;
 }

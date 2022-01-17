@@ -5,27 +5,32 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-//@Entity
-//@Table(name = "like")
+@Entity
+@Table(name = "tbl_like")
 public class Like {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "people_like_id")
-    private  Integer peopleLikeId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    private  User peopleLikeId;
 
 
 
     @Column(name ="updated")
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate updated;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updated;
 
 
     @ManyToOne

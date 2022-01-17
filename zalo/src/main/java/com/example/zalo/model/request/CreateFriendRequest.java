@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,7 +25,7 @@ public class CreateFriendRequest {
 
 
     @JsonProperty("created")
-    private LocalDate created;
+    private LocalDateTime created;
 
     @JsonProperty("state")
     private String state;

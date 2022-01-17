@@ -22,7 +22,7 @@ public interface FriendService {
 
     List<FriendDTO> getAllFriendRequest(int userId);
 
-    void createFriendRequest(CreateFriendRequest request,int userAId, int userBId);
+    void createFriendRequest(int userAId, int userBId);
 
     void acceptFriendRequest( int id);
 

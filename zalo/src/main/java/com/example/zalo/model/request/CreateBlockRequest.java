@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,12 +23,15 @@ public class CreateBlockRequest {
 
 
     @JsonProperty("created")
-    private LocalDate created;
+    private LocalDateTime created;
 
     @JsonProperty("block_chat")
     private String blockChat;
 
     @JsonProperty("block_diary")
     private String blockDiary;
+
+    @JsonProperty("block_user")
+    private String user;
 
 }

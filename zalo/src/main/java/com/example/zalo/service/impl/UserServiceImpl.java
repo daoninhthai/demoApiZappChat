@@ -9,15 +9,16 @@ import java.util.stream.Collectors;
 
 
 import com.example.zalo.entity.Authority;
+import com.example.zalo.entity.Block;
 import com.example.zalo.entity.User;
-import com.example.zalo.exception.BadRequestException;
-import com.example.zalo.exception.InternalServerException;
-import com.example.zalo.exception.NotFoundException;
+import com.example.zalo.exception.*;
 import com.example.zalo.model.dto.UserDTO;
 import com.example.zalo.model.mapper.UserMapper;
 import com.example.zalo.model.request.ChangePasswordRequest;
 import com.example.zalo.model.request.CreateUserRequest;
+import com.example.zalo.model.request.SignUpRequest;
 import com.example.zalo.model.request.UpdateUserRequest;
+import com.example.zalo.repository.BlockRepository;
 import com.example.zalo.repository.UserChatRepository;
 import com.example.zalo.repository.UserRepository;
 import com.example.zalo.service.UserService;
@@ -35,13 +36,14 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final PasswordEncoder passwordEncoder;
-
+    private final BlockRepository blockRepository;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserChatRepository userChatRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserChatRepository userChatRepository, PasswordEncoder passwordEncoder, BlockRepository blockRepository) {
         this.userRepository = userRepository;
         this.userChatRepository = userChatRepository;
 
         this.passwordEncoder = passwordEncoder;
+        this.blockRepository = blockRepository;
     }
 
     public List<User> findAll() {
@@ -60,19 +62,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findByUserName(String username) {
-        User user = userRepository.findByUsername(username);
+    public UserDTO findByPhoneNumber1(String phoneNumber) {
+        User user = userRepository.findByPhoneNumber(phoneNumber);
         return UserMapper.toUserDTO(user);
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findUserByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber);
     }
 
     @Override
-    public UserDTO getUserById(int id) {
+    public UserDTO getUserById(int id ,int userId) {
+
+        Block blockUser= blockRepository.checkBlockUser(id,userId);
+
+
+        if(blockUser != null){
+            throw new BadGuyException("user");
+        }
         Optional<User> user = userRepository.findById(id);
+        if(user.get().getStatus().equals("disabled")){
+            throw new InternalServerException("disable");
+        }
         if (user.isEmpty()) {
             throw new NotFoundException("No user found");
         }
@@ -150,7 +162,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(CreateUserRequest request) {
 
-        User user = userRepository.findByUsername(request.getUsername());
+        if(!request.getPhoneNumber().startsWith("0")){
+            throw new InternalServerException("wrong phone number ");
+        }
+        if(request.getPhoneNumber().length()>10 || request.getPhoneNumber().length()<6){
+            throw  new BusinessException();
+        }
+        User user = userRepository.findByPhoneNumber(request.getPhoneNumber());
+        if(user!=null){
+            throw new DuplicateRecordException("duplicate phone number");
+        }
+
         long count = userRepository.count() + 1;
 
         user = UserMapper.toUser(request);
@@ -172,12 +194,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO changePassword(ChangePasswordRequest request, String username) {
-        User updateUser = UserMapper.toUser(request, username);
+    public UserDTO changePassword(ChangePasswordRequest request, String phoneNumber) {
+        User updateUser = UserMapper.toUser(request);
+       User user = userRepository.findByPhoneNumber(phoneNumber);
         try {
-
+            updateUser.setAuthority(user.getAuthority());
+            updateUser.setPhoneNumber(user.getPhoneNumber());
+            updateUser.setLinkAvatar(user.getLinkAvatar());
+            updateUser.setDob(user.getDob());
+            updateUser.setFirstName(user.getFirstName());
+            updateUser.setLastName(user.getLastName());
+            updateUser.setStatus(user.getStatus());
+            updateUser.setJoinedDate(user.getJoinedDate());
+            updateUser.setGender(user.getGender());
             updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
-            userRepository.updatePassword(updateUser.getPassword(), username);
+            userRepository.updatePassword(updateUser.getPassword(), phoneNumber);
         } catch (Exception ex) {
             throw new InternalServerException("Can't update password");
         }
@@ -185,11 +216,32 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserDTO(updateUser);
     }
 
+       public Optional<User> findByPhoneNumber(String phoneNumber) {
+        return userChatRepository.findByPhoneNumber(phoneNumber);
+    }
 
+    @Override
+    public UserDTO signUp(SignUpRequest request) {
+        if(!request.getPhoneNumber().startsWith("0")){
+            throw new InternalServerException("wrong phone number ");
+        }
+        if(request.getPhoneNumber().length()>10 || request.getPhoneNumber().length()<6){
+            throw  new BusinessException();
+        }
+        User user = userRepository.findByPhoneNumber(request.getPhoneNumber());
+        if(user!=null){
+            throw new DuplicateRecordException("duplicate phone number");
+        }
+        user = UserMapper.toUser(request);
+        user.setStatus("enabled");
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-    public Optional<User> findByUsername(String username) {
-
-        return userChatRepository.findByUsername(username);
+        Authority authority = new Authority();
+        authority.setAuthority("user");
+        authority.setUser(user);
+        user.setAuthority(authority);
+        userRepository.saveAndFlush(user);
+        return UserMapper.toUserDTO(user);
     }
 
 }

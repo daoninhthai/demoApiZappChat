@@ -18,6 +18,7 @@ public class BlockMapper {
         tmp.setId(block.getId());
         tmp.setUserA(block.getUserA().getId());
         tmp.setUserB(block.getUserB().getId());
+        tmp.setPostId(block.getPostId());
         tmp.setCreated(block.getCreated());
         tmp.setState(block.getState());
         return tmp;
@@ -28,19 +29,44 @@ public class BlockMapper {
         Block block = new Block();
         block.setState("chat");
 
-        ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
-        LocalDateTime now = LocalDateTime.now(zoneId);
+
+        LocalDateTime now = LocalDateTime.now();
         block.setCreated(now);
         return block;
     }
 
-    public static Block toBlockDiary(CreateBlockRequest request ) {
+    public static Block toBlockDiary() {
         Block block = new Block();
         block.setState("diary");
-        LocalDate now = LocalDate.now();
-//        block.setCreated(now);
+        LocalDateTime now = LocalDateTime.now();
+        block.setCreated(now);
         return block;
     }
 
+
+    public static Block toBlockUser() {
+        Block block = new Block();
+        block.setState("user");
+        LocalDateTime now = LocalDateTime.now();
+        block.setCreated(now);
+        return block;
+    }
+
+
+    public static Block toBlockUserComment() {
+        Block block = new Block();
+        block.setState("comment");
+        LocalDateTime now = LocalDateTime.now();
+        block.setCreated(now);
+        return block;
+    }
+
+    public static Block toBlockComments() {
+        Block block = new Block();
+        block.setState("comments");
+        LocalDateTime now = LocalDateTime.now();
+        block.setCreated(now);
+        return block;
+    }
 
 }
